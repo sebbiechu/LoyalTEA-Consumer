@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
   <link rel="stylesheet" href="styles/global.css" />
   <link rel="stylesheet" href="styles/rewards.css" />
-  <script defer src="scripts/app.js"></script>
+
 </head>
 <body>
   <body>
@@ -22,13 +22,13 @@
 
     <main class="reward-options">
       <div class="reward-card" id="coffeeReward">
-        <img src="images/coffee_bean.png" alt="Free Coffee" class="reward-icon" />
+        <img src="images/coffee_bean.svg" alt="Free Coffee" class="reward-icon" />
         <p class="reward-label">1 Free Coffee</p>
       </div>
       <div class="reward-card" id="teaReward">
+        <span class="reward-badge" id="teaBadge">1/2</span>
         <img src="images/tea_bag.png" alt="2 Free Teas" class="reward-icon" />
         <p class="reward-label">2 Free Teas</p>
-        <p id="teaStatus" class="tea-status"></p>
       </div>
 
     </main>
@@ -55,5 +55,8 @@
       <span>Settings</span>
     </a>
   </nav>
+
+<script defer src="scripts/rewards.js"></script>
+
 </body>
 </html>

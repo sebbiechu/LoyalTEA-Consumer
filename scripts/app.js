@@ -1,113 +1,66 @@
-console.log("✅ app.js loaded on rewards page");
+// app.js (shared logic across pages)
 
-document.addEventListener("DOMContentLoaded", () => {
-  const stampGrid = document.getElementById("stampGrid");
-  const addStampBtn = document.getElementById("addStampBtn");
-  const coffeeReward = document.getElementById("coffeeReward");
-  const teaReward = document.getElementById("teaReward");
-  const confirmBtn = document.getElementById("confirmRewardBtn");
-  const teaStatus = document.getElementById("teaStatus");
+import { auth } from "./firebase-init.js";
+import {
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-  let stamps = 0;
-  let teaRedeemed = 0;
-  let selectedReward = null;
+/**
+ * Auto-format email by appending @loyaltea.app
+ */
+export function formatEmail(emailInput) {
+  const value = emailInput.value.trim();
+  emailInput.value = value.includes("@") ? value : `${value}@loyaltea.app`;
+}
 
-  function renderStampGrid() {
-    if (!stampGrid) return;
-    stampGrid.innerHTML = "";
-    for (let i = 0; i < 9; i++) {
-      const img = document.createElement("img");
-      img.src = i < stamps ? "images/star-filled.png" : "images/star-empty.png";
-      img.className = "stamp-icon";
-      stampGrid.appendChild(img);
-    }
+/**
+ * Shared password validation check
+ */
+export function validatePassword(password) {
+  const badgeMap = {
+    upper: /[A-Z]/,
+    lower: /[a-z]/,
+    number: /\d/,
+    special: /[!@#$%^&*(),.?":{}|<>]/,
+    length: /.{8,}/
+  };
+
+  return Object.entries(badgeMap).every(([_, regex]) => regex.test(password));
+}
+
+/**
+ * Centralized login handler
+ */
+export async function handleLogin(email, password) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+  } catch (error) {
+    throw new Error(error.message);
   }
+}
 
-  function resetRewards() {
-    stamps = 0;
-    teaRedeemed = 0;
-    selectedReward = null;
-    coffeeReward?.classList.remove("selected");
-    teaReward?.classList.remove("selected");
-    updateTeaStatus();
-    renderStampGrid();
+/**
+ * Centralized register handler
+ */
+export async function handleRegister(email, password) {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+  } catch (error) {
+    throw new Error(error.message);
   }
+}
 
-  function updateTeaStatus() {
-    if (teaStatus) {
-      if (teaRedeemed === 2) {
-        teaStatus.textContent = "✅ Used";
-        teaReward.classList.add("disabled");
-      } else if (teaRedeemed === 1) {
-        teaStatus.textContent = "1 of 2 used";
-      } else {
-        teaStatus.textContent = "";
-        teaReward.classList.remove("disabled");
-      }
-    }
-  }
-
-  if (addStampBtn) {
-    addStampBtn.addEventListener("click", () => {
-      if (stamps < 9) {
-        stamps++;
-        renderStampGrid();
-        if (stamps === 9) {
-          console.log("🎉 Rewards unlocked!");
-        }
-      }
-    });
-  }
-
-  if (coffeeReward) {
-  coffeeReward.addEventListener("click", () => {
-    if (stamps === 9) {
-      coffeeReward.classList.add("selected");
-      teaReward.classList.remove("selected");
-      selectedReward = "coffee";
-
-      confirmBtn.disabled = false;
-      confirmBtn.classList.add("active");
+/**
+ * Redirect if already logged in
+ */
+export function redirectIfLoggedIn() {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      window.location.href = "home.html";
     }
   });
 }
-
-if (teaReward) {
-  teaReward.addEventListener("click", () => {
-    if (stamps === 9 && teaRedeemed < 2) {
-      teaReward.classList.add("selected");
-      coffeeReward.classList.remove("selected");
-      selectedReward = "tea";
-
-      confirmBtn.disabled = false;
-      confirmBtn.classList.add("active");
-    }
-  });
-}
-
-
-  if (confirmBtn) {
-    confirmBtn.addEventListener("click", () => {
-      if (selectedReward === "coffee") {
-        alert("☕ Enjoy your free coffee!");
-        resetRewards();
-      } else if (selectedReward === "tea") {
-        teaRedeemed++;
-        alert(`🫖 Enjoy tea ${teaRedeemed} of 2`);
-        updateTeaStatus();
-        if (teaRedeemed === 2) {
-          resetRewards();
-        } else {
-          selectedReward = null;
-          teaReward.classList.remove("selected");
-          confirmBtn.disabled = true;
-          confirmBtn.classList.remove("active");
-
-        }
-      }
-    });
-  }
-
-  renderStampGrid();
-  updateTeaStatus();
-});

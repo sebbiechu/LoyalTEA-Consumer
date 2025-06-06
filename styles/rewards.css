@@ -18,31 +18,56 @@ html, body {
 
 .reward-options {
   display: flex;
-  justify-content: space-around;
-  gap: 20px;
   flex-wrap: wrap;
-  padding: 0 10px;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 16px;
+  margin-bottom: 100px;
 }
 
 .reward-card {
+  position: relative;
   background: white;
   border-radius: 16px;
-  padding: 20px;
-  flex: 1 1 40%;
-  max-width: 200px;
+  padding: 12px 10px;
+  flex: 1 1 calc(50% - 12px); /* 2 items per row */
+  max-width: calc(50% - 12px);
+  box-sizing: border-box;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
+.reward-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: #ec008c;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 2px 6px;
+  display: none;
+}
+
 .reward-icon {
-  width: 48px;
-  margin-bottom: 12px;
+  width: 40px;
+  margin-bottom: 8px;
 }
 
 .reward-label {
   font-size: 16px;
   font-weight: 600;
   color: #4c0025;
+}
+
+.tea-status {
+  font-size: 13px;
+  color: #800020;
+  margin-top: 6px;
+  min-height: 18px;
+  line-height: 1;
+  visibility: hidden; /* ✅ hides empty space visually */
 }
 
 #stampGrid {
@@ -130,3 +155,9 @@ html, body {
   cursor: pointer;
 }
 
+@media (max-width: 480px) {
+  .reward-card {
+    flex: 1 1 48%;
+    max-width: 48%;
+  }
+}
