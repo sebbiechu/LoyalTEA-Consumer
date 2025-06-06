@@ -19,6 +19,36 @@ body, html {
   transition: all 0.3s ease-in-out;
 }
 
+/* Close button top-right */
+.close-btn {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #800020;
+  cursor: pointer;
+  z-index: 100;
+}
+
+/* Slide out right */
+.page-slide-out-right {
+  animation: slideOutRight 0.4s forwards;
+}
+
+@keyframes slideOutRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+
 
 .qr-header {
   width: 100%;

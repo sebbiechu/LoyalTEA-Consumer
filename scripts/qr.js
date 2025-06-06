@@ -37,3 +37,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const closeBtn = document.getElementById("closeBtn");
+  const qrWrapper = document.getElementById("qrWrapper");
+
+  if (closeBtn && qrWrapper) {
+    closeBtn.addEventListener("click", () => {
+      qrWrapper.classList.add("page-slide-out-right");
+      setTimeout(() => {
+        window.location.href = "home.html";
+      }, 400);
+    });
+  }
+});
