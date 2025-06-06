@@ -5,7 +5,21 @@ import { db } from "./firebase-init.js";
 document.addEventListener("DOMContentLoaded", () => {
   const userNameDisplay = document.getElementById("userName");
   const stampCountDisplay = document.querySelector(".stamp-progress .current");
+  const scanBtn = document.getElementById("scanQrBtn");
+  const wrapper = document.getElementById("pageWrapper");
 
+  // ✅ QR Slide Transition
+  if (scanBtn && wrapper) {
+    scanBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      wrapper.classList.add("page-slide-out-left");
+      setTimeout(() => {
+        window.location.href = "qr.html";
+      }, 400);
+    });
+  }
+
+  // ✅ Firebase Auth Check & Stamp Update
   auth.onAuthStateChanged(async (user) => {
     if (!user) {
       console.warn("No user signed in. Redirecting...");

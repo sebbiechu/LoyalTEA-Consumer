@@ -19,26 +19,6 @@ body, html {
   transition: all 0.3s ease-in-out;
 }
 
-.qr-container::before,
-.qr-container::after {
-  content: '';
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  background: #fff;
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-}
-
-.qr-container::before {
-  left: -16px;
-}
-
-.qr-container::after {
-  right: -16px;
-}
 
 .qr-header {
   width: 100%;

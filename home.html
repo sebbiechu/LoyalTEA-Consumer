@@ -4,11 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LoyalTEA – Home</title>
-  <link rel="stylesheet" href="styles/auth.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="styles/global.css" />
   <link rel="stylesheet" href="styles/home.css" />
   <script defer src="scripts/home.js"></script>
 </head>
 <body>
+<div id="pageWrapper">
   <div class="home-container">
     <!-- Header Section -->
     <div class="home-header">
@@ -18,7 +20,7 @@
       </div>
       <div class="stamp-count">
         <div class="stamp-progress">
-            <span class="current">0</span><span class="divider">/10</span>
+            <span class="current">0</span><span class="divider">/9</span>
         </div>
         <img src="images/star.png" alt="stamp" class="stamp-icon" />
       </div>
@@ -26,7 +28,7 @@
 
     <!-- Main Action Button -->
     <div class="action-section">
-        <button class="scan-btn" onclick="window.location.href='qr.html'">Scan QR</button>
+        <button class="scan-btn" id="scanQrBtn">Scan QR</button>
         <button class="menu-btn">Canteen Menu</button>
     </div>
 </div>
@@ -34,11 +36,11 @@
 
     <!-- Bottom Nav -->
     <nav class="bottom-nav">
-      <a class="nav-item active" href="#">
+      <a class="nav-item active" href="home.html">
         <img src="images/home.svg" alt="Home" />
         <span>Home</span>
       </a>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="rewards.html">
         <img src="images/rewards.svg" alt="Rewards" />
         <span>Rewards</span>
       </a>
@@ -48,6 +50,7 @@
       </a>
     </nav>
     
+</div>
 <script type="module" src="scripts/home.js"></script>
 
 

@@ -1,0 +1,132 @@
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
+
+.rewards-container {
+  height: calc(100% - 140px); /* 64px nav + ~76px header/footer */
+  overflow-y: auto;
+  padding: 20px;
+  background-color: #fde6ef;
+  box-sizing: border-box;
+}
+
+.rewards-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.reward-options {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 0 10px;
+}
+
+.reward-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  flex: 1 1 40%;
+  max-width: 200px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.reward-icon {
+  width: 48px;
+  margin-bottom: 12px;
+}
+
+.reward-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4c0025;
+}
+
+#stampGrid {
+  width: 20px;
+  height: 20px;
+  width: 100%;
+}
+
+.reward-card.selected {
+  border: 2px solid #ec008c;
+  box-shadow: 0 0 12px #ec008c50;
+}
+
+#confirmRewardBtn {
+  display: block;
+  margin: 20px auto 40px;
+  padding: 14px 24px;
+  font-size: 16px;
+  border-radius: 12px;
+  background-color: #ec008c;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#confirmRewardBtn.hidden {
+  display: none;
+}
+
+.tea-status {
+  font-size: 13px;
+  color: #800020;
+  margin-top: 6px;
+}
+
+/* Top app bar */
+.app-bar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  padding: 16px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 20px;
+  color: #800020;
+  font-weight: 600;
+}
+
+/* Fixed action footer */
+.action-footer {
+  position: fixed;
+  bottom: 64px; /* above nav */
+  left: 0;
+  width: 100%;
+  background-color: #fde6ef;
+  padding: 16px 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  z-index: 99;
+}
+
+.confirm-btn {
+  width: 100%;
+  max-width: 320px;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: not-allowed;
+  background-color: #ccc;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-btn.active {
+  background-color: #ec008c;
+  cursor: pointer;
+}
+
