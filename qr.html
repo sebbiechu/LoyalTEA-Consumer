@@ -8,13 +8,16 @@
   <script type="module" src="scripts/qr.js"></script> <!-- ✅ Only this script -->
 </head>
 <body>
-  
+
   <div class="qr-header">Scan code at till</div>
 
-  <div class="qr-container">
+  <div class="qr-container fade-in">
+    
     <canvas id="qrcode"></canvas>
+     <div id="loadingSpinner" class="spinner hidden"></div>
     <div class="qr-id">No: <span id="userId">Loading...</span></div>
     <div class="qr-footer">
+      
       <img src="images/rewards.svg" alt="reward icon" class="gift-icon" />
       <p>There are no rewards available right now.<br>Check back soon!</p>
     </div>

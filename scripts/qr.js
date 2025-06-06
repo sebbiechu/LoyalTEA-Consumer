@@ -3,6 +3,13 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/fi
 import QRCode from "https://cdn.skypack.dev/qrcode";
 
 document.addEventListener("DOMContentLoaded", () => {
+  const spinner = document.getElementById("loadingSpinner");
+  const qrContainer = document.querySelector(".qr-container");
+
+  // Show spinner
+  spinner.classList.remove("hidden");
+  qrContainer.style.opacity = 0;
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const uid = user.uid;
@@ -15,6 +22,14 @@ document.addEventListener("DOMContentLoaded", () => {
         color: {
           dark: "#000",
           light: "#fff"
+        }
+      }, (error) => {
+        // Hide spinner + fade in container once QR is drawn
+        if (!error) {
+          spinner.classList.add("hidden");
+          qrContainer.classList.add("fade-in");
+        } else {
+          console.error("QR Generation Error:", error);
         }
       });
     } else {

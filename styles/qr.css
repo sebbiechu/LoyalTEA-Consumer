@@ -8,7 +8,36 @@ body, html {
 }
 
 .qr-container {
-  padding: 24px;
+  max-width: 320px;
+  margin: 40px auto;
+  padding: 24px 16px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  border: 2px dashed #ec008c;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
+.qr-container::before,
+.qr-container::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.qr-container::before {
+  left: -16px;
+}
+
+.qr-container::after {
+  right: -16px;
 }
 
 .qr-header {
@@ -46,4 +75,48 @@ body, html {
   width: 48px;
   height: 48px;
   margin-bottom: 10px;
+}
+
+.spinner {
+  border: 4px solid #552b2b;
+  border-top: 4px solid #ec008c;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .qr-container {
+    padding: 16px 12px;
+  }
+
+  #qrcode {
+    width: 160px !important;
+    height: 160px !important;
+  }
+
+  .qr-id {
+    font-size: 12px;
+  }
 }
