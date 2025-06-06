@@ -12,36 +12,37 @@
   <link rel="stylesheet" href="styles/app.css" />
 </head>
 <body>
-  <div class="auth-container">
-    <div class="register-header-block">
-      <h1 class="register-heading">Welcome Back</h1>
+  <div class="auth-wrapper">
+    <div class="auth-container">
+      <div class="register-header-block">
+        <h1 class="register-heading">Welcome Back</h1>
+      </div>
+
+      <form class="register-form" id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Username (or email)</label>
+          <input
+            type="text"
+            id="loginEmail"
+            placeholder="e.g. sam or sam@loyaltea.app"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" required />
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="submit-btn" id="loginSubmit">Login</button>
+          <p class="auth-error" id="loginError"></p>
+        </div>
+      </form>
     </div>
-
-<form class="register-form" id="loginForm">
-  <div class="form-group">
-    <label for="loginEmail">Username (or email)</label>
-<input
-  type="text"
-  id="loginEmail"
-  placeholder="e.g. sam or sam@loyaltea.app"
-  required
-/>
-
   </div>
 
-  <div class="form-group">
-    <label for="loginPassword">Password</label>
-    <input type="password" id="loginPassword" required />
-  </div>
-</form>
-
-<div class="form-footer">
-  <button type="button" class="submit-btn" id="loginSubmit">Login</button>
-  <p class="auth-error" id="loginError"></p>
-</div>
-
-
-<script type="module" src="./scripts/login.js"></script>
-
+  <script type="module" src="./scripts/login.js"></script>
 </body>
+
 </html>
