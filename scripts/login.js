@@ -1,23 +1,32 @@
 import { auth } from "./firebase-init.js";
 import {
-  formatEmail,
-  handleLogin
-} from "./app.js";
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const emailInput = document.getElementById("loginEmail");
+  const usernameInput = document.getElementById("username");
   const passwordInput = document.getElementById("loginPassword");
   const loginButton = document.getElementById("loginSubmit");
 
-  loginButton.addEventListener("click", async () => {
-    const email = formatEmail(emailInput.value);
-    const password = passwordInput.value;
+  loginButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const username = usernameInput?.value.trim();
+    const password = passwordInput?.value;
+
+    if (!username || !password) {
+      alert("❌ Please enter both username and password.");
+      return;
+    }
+
+    const email = `${username}@loyaltea.app`; // same logic as register
 
     try {
-      await handleLogin(auth, email, password);
-      console.log("✅ Logged in");
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("✅ Logged in successfully");
+      window.location.href = "home.html";
     } catch (error) {
-      alert("Login failed: " + error.message);
+      alert("❌ Login failed: " + error.message);
     }
   });
 });

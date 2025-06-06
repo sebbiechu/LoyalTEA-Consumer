@@ -31,21 +31,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
 
-      if (userSnap.exists()) {
+      if (userSnap.exists() && userNameDisplay) {
         const data = userSnap.data();
-        const firstName = data.firstName || "there";
+        const firstName = data.firstName || "friend";
         const stamps = data.stamps || 0;
 
         console.log("✅ Name from Firestore:", firstName);
         userNameDisplay.textContent = firstName;
-        stampCountDisplay.textContent = stamps;
+
+        if (stampCountDisplay) {
+          stampCountDisplay.textContent = stamps;
+        }
       } else {
         console.warn("User doc not found.");
-        userNameDisplay.textContent = "there";
+        if (userNameDisplay) userNameDisplay.textContent = "friend";
       }
     } catch (err) {
       console.error("Error getting user data:", err);
-      userNameDisplay.textContent = "friend";
+      if (userNameDisplay) userNameDisplay.textContent = "friend";
     }
   });
 });

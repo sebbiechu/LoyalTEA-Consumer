@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+  background-color: #f4dfd9;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Stamp Grid */
+.stamp-grid {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 2.5rem 2rem 2rem;
+  background-color: #f4dfd9;
+  justify-items: center;
+}
+
+
+.stamp {
+  width: 64px;
+  height: 64px;
+  background-color: #fff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.stamp.filled {
+  background-image: url('../images/bean.svg');
+  background-size: 28px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.stamp.cup {
+  background-image: url('../images/coffee-cup.png');
+  background-size: 34px;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  box-shadow: none;
+}
+
+/* Tab Bar */
+.log-tabs {
+  display: flex;
+  justify-content: center;
+  background-color: #79142a;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+  border-bottom: 3px solid transparent;
+  cursor: default;
+}
+
+
+/* Redeem Logs */
+.redeem-log-section {
+  background-color: #fff;
+  margin: 0; /* no margin causing gaps */
+  width: 100vw; /* full viewport width */
+  box-sizing: border-box;
+  border-radius: 0; /* ensure no rounding */
+}
+
+/* Redeem Logs wrapper */
+.redeem-log-wrapper {
+  background-color: #fff;
+  width: 100vw;
+  box-sizing: border-box;
+  min-height: 100vh; /* always cover the full viewport height in white */
+}
+
+
+
+.redeem-log {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  margin-top: 1rem;
+}
+
+.redeem-date {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #2c2c2c;
+  margin-bottom: 0.5rem;
+}
+
+.redeem-entry {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #333;
+}
+
+.redeem-entry::before {
+  content: url('../images/bean.svg');
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-right: 0.5rem;
+}

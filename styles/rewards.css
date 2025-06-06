@@ -34,7 +34,7 @@ html, body {
   max-width: calc(50% - 12px);
   box-sizing: border-box;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .reward-badge {
@@ -47,7 +47,7 @@ html, body {
   font-weight: bold;
   border-radius: 12px;
   padding: 2px 6px;
-  display: none;
+  display: none; /* default hidden */
 }
 
 .reward-icon {
@@ -67,13 +67,7 @@ html, body {
   margin-top: 6px;
   min-height: 18px;
   line-height: 1;
-  visibility: hidden; /* ✅ hides empty space visually */
-}
-
-#stampGrid {
-  width: 20px;
-  height: 20px;
-  width: 100%;
+  visibility: hidden; /* hides empty space visually */
 }
 
 .reward-card.selected {

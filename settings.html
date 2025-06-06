@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings</title>
+  <link rel="stylesheet" href="styles/global.css" />
+  <link rel="stylesheet" href="styles/app.css" />
+  <link rel="stylesheet" href="styles/settings.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  
+</head>
+<body>
+  <header class="register-header-block">
+    <h1 class="register-heading">Hi <span id="userName" class="user-name"></span></h1>
+  </header>
+  <div class="sub-bar">How can we help?</div>
+
+  <div class="settings-container">
+    <section>
+      <h2 class="settings-section-title">Your Profile</h2>
+      <div class="setting-option" id="changePasswordBtn">Change Password</div>
+      <div class="setting-option" id="redeemHistoryBtn">Redeem History</div>
+    </section>
+
+    <section>
+      <h2 class="settings-section-title">Support</h2>
+      <div class="setting-option">Contact Us</div>
+      <div class="setting-option" id="deleteAccountBtn">Delete Account</div>
+    </section>
+
+    <section>
+      <h2 class="settings-section-title">Version</h2>
+      <div class="version-text">App Version: 1.0.0</div>
+    </section>
+
+    <div class="logout-wrapper">
+      <button class="logout-button" id="logoutBtn">Log Out</button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="nav-item" href="home.html">
+      <img src="images/home.svg" alt="Home" />
+      <span>Home</span>
+    </a>
+    <a class="nav-item" href="rewards.html">
+      <img src="images/rewards.svg" alt="Rewards" />
+      <span>Rewards</span>
+    </a>
+    <a class="nav-item active" href="settings.html">
+      <img src="images/settings.svg" alt="Settings" />
+      <span>Settings</span>
+    </a>
+  </nav>
+
+<script type="module" src="scripts/home.js"></script>
+<script type="module" src="scripts/settings.js"></script>
+
+</body>
+</html>
