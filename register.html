@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/global.css" />
+    <link rel="stylesheet" href="styles/auth.css" />
+    <link rel="stylesheet" href="styles/app.css" />
+    <script type="module" src="scripts/register.js"></script>
+  </head>
+  <body>
+    <div class="auth-container">
+      <div class="register-header-block">
+        <h1 class="register-heading">Create Your Account</h1>
+      </div>
+
+      <form id="registerForm" class="register-form">
+        <p class="form-instruction">* Indicates required field</p>
+
+        <div class="form-group">
+          <label for="username">Desired Username <span class="asterisk">*</span></label>
+          <input type="text" id="username" required />
+        </div>
+
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" required />
+        </div>
+
+
+        <div class="form-group password-wrapper">
+          <label for="regPassword">Password <span class="asterisk">*</span></label>
+          <input type="password" id="regPassword" required />
+          <button type="button" id="togglePassword" class="icon-button">
+            <img id="passwordIcon" src="images/close-eye.png" alt="toggle" />
+          </button>
+        </div>
+
+        <div class="badge-wrap">
+          <span class="badge" data-rule="upper">Uppercase</span>
+          <span class="badge" data-rule="lower">Lowercase</span>
+          <span class="badge" data-rule="number">Number</span>
+          <span class="badge" data-rule="special">Symbol</span>
+          <span class="badge" data-rule="length">8+ Characters</span>
+        </div>
+
+        <div class="form-footer">
+          <button id="registerSubmit" type="submit" class="submit-btn" disabled>Register</button>
+          <p class="auth-error" id="registerError"></p>
+          <p class="member-text">Already a member? <a href="login.html">Login</a></p>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

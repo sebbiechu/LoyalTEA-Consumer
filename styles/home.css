@@ -1,0 +1,158 @@
+/* ---------- Home Screen Styles ---------- */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fde6ef;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.home-container {
+  flex: 1;
+  padding: 20px;
+  background-color: #fde6ef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.action-section {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+
+.welcome-text {
+  font-size: 18px;
+  color: #4c0025;
+  line-height: 1.4;
+}
+
+.user-name {
+  display: block;
+  font-weight: 700;
+  font-size: 22px;
+  color: #4c0025;
+}
+
+.stamp-count {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 10px 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  font-size: 18px;
+  font-weight: 700;
+  color: #4c0025;
+}
+
+.stamp-count span {
+  margin-right: 6px;
+}
+
+.stamp-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.stamp-progress {
+  display: flex;
+  align-items: center;
+}
+
+.stamp-progress .current {
+  font-size: 24px;
+  font-weight: 700;
+  margin-right: 2px;
+}
+
+.stamp-progress .divider {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.action-section {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.scan-btn {
+  flex: 1;
+  background-color: #ec008c;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  height: 100px;
+}
+
+.menu-btn {
+  flex: 1;
+  background-color: #ec008c;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  height: 100px;
+}
+
+
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: #800020;
+  text-decoration: none;
+}
+
+.nav-item img {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 4px;
+}
+
+.nav-item.active {
+  color: #ec008c;
+}
+
+.nav-item.active img {
+  filter: hue-rotate(300deg) saturate(3);
+}

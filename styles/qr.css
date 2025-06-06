@@ -1,0 +1,49 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff;
+  text-align: center;
+  color: #4c0025;
+}
+
+.qr-container {
+  padding: 24px;
+}
+
+.qr-header {
+  width: 100%;
+  background-color: #f4dfdb;
+  color: #800020;
+  font-weight: 700;
+  font-size: 18px;
+  text-align: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #e0cfcf;
+  box-sizing: border-box;
+}
+
+
+.qr-box {
+  margin: 40px auto 20px;
+  width: 200px;
+  height: 200px;
+}
+
+.qr-id {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+
+.qr-footer {
+  margin-top: 40px;
+  color: #999;
+  font-size: 14px;
+}
+
+.gift-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+}

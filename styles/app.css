@@ -1,0 +1,87 @@
+/* ---------- Main App Styles ---------- */
+.app-container {
+  padding: 30px 20px;
+  background-color: #f7e9e4;
+  min-height: 100vh;
+  font-family: 'Work Sans', sans-serif;
+  color: #651c32;
+  text-align: center;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.title span {
+  color: #ec008c;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #8e2c44;
+  margin-bottom: 25px;
+}
+
+.stamp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stamp-icon {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.reward-section {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 320px;
+  margin: 0 auto 30px auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.reward-options {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.reward-icon {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.reward-icon:hover {
+  transform: scale(1.1);
+}
+
+#addStampBtn {
+  padding: 12px 20px;
+  background-color: #651c32;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#addStampBtn:hover {
+  background-color: #50041e;
+}
+
+.hidden {
+  display: none !important;
+}

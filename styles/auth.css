@@ -1,0 +1,228 @@
+/* ---------- Auth & Welcome Styles ---------- */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fde6ef;
+  height: 100%;
+}
+
+.auth-container {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fde6ef;
+  overflow-y: auto;
+}
+
+.top-section {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.title-line {
+  font-size: 34px;
+  font-weight: 700;
+  color: #ec008c;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: #800020;
+  margin-top: 10px;
+}
+
+.welcome-logo {
+  width: 160px;
+  height: 160px;
+  margin: 60px auto 20px;
+  object-fit: contain;
+}
+
+.bottom-section {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.primary-btn, .secondary-btn {
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 30px;
+  padding: 14px;
+  width: 90%;
+  display: block;
+  margin: 0 auto 12px;
+  cursor: pointer;
+}
+
+.primary-btn {
+  background-color: #ec008c;
+  color: white;
+  border: none;
+}
+
+.secondary-btn {
+  background-color: transparent;
+  border: 2px solid #800020;
+  color: #800020;
+}
+
+.member-text {
+  font-size: 14px;
+  color: #800020;
+  margin-bottom: 10px;
+}
+
+/* ---------- Register Page Redesign ---------- */
+.register-header-block {
+  background-color: #f4dfdb;
+  padding: 24px 20px 16px;
+  text-align: center;
+}
+
+.register-heading {
+  font-size: 24px;
+  font-weight: 700;
+  color: #4c0025;
+  margin: 0;
+}
+
+.register-form {
+  background: white;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  box-sizing: border-box;
+  gap: 0;
+}
+
+.form-instruction {
+  font-size: 13px;
+  color: #777;
+  margin: 0 0 10px 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #4c0025;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+  box-sizing: border-box;
+}
+
+.password-wrapper {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.icon-button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.icon-button img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.badge-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.badge {
+  font-size: 11px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 5px 10px;
+  color: #555;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.badge.met {
+  background-color: #ec008c20;
+  border-color: #ec008c;
+  color: #ec008c;
+  font-weight: 600;
+}
+
+.form-footer {
+  background-color: white;
+  padding: 16px;
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+}
+
+.submit-btn {
+  background-color: #ec008c;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 30px;
+  padding: 14px;
+  width: 100%;
+  max-width: 400px;
+  display: block;
+}
+
+.submit-btn:disabled {
+  background-color: #ccc;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.auth-error {
+  color: red;
+  font-size: 13px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.asterisk {
+  color: #ec008c;
+}
+
+.hidden {
+  display: none !important;
+}

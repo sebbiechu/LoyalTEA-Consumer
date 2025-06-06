@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LoyalTEA – Home</title>
+  <link rel="stylesheet" href="styles/auth.css" />
+  <link rel="stylesheet" href="styles/home.css" />
+  <script defer src="scripts/home.js"></script>
+</head>
+<body>
+  <div class="home-container">
+    <!-- Header Section -->
+    <div class="home-header">
+      <div class="welcome-text">
+        <span>Hi</span>
+        <span id="userName" class="user-name"></span>
+      </div>
+      <div class="stamp-count">
+        <div class="stamp-progress">
+            <span class="current">0</span><span class="divider">/10</span>
+        </div>
+        <img src="images/star.png" alt="stamp" class="stamp-icon" />
+      </div>
+    </div>
+
+    <!-- Main Action Button -->
+    <div class="action-section">
+        <button class="scan-btn" onclick="window.location.href='qr.html'">Scan QR</button>
+        <button class="menu-btn">Canteen Menu</button>
+    </div>
+</div>
+
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <a class="nav-item active" href="#">
+        <img src="images/home.svg" alt="Home" />
+        <span>Home</span>
+      </a>
+      <a class="nav-item" href="#">
+        <img src="images/rewards.svg" alt="Rewards" />
+        <span>Rewards</span>
+      </a>
+      <a class="nav-item" href="#">
+        <img src="images/settings.svg" alt="Settings" />
+        <span>Settings</span>
+      </a>
+    </nav>
+    
+<script type="module" src="scripts/home.js"></script>
+
+
+</body>
+</html>
