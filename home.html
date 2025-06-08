@@ -7,52 +7,61 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
   <link rel="stylesheet" href="styles/global.css" />
   <link rel="stylesheet" href="styles/home.css" />
-
 </head>
 <body>
-<div id="pageWrapper">
-  <div class="home-container">
-    <!-- Header Section -->
-    <div class="home-header">
-      <div class="welcome-text">
-        <span>Hi</span>
-        <span id="userName" class="user-name"></span>
-      </div>
-      <div class="stamp-count">
-        <div class="stamp-progress">
-            <span class="current">0</span><span class="divider">/9</span>
+  <div id="pageWrapper">
+    <div class="home-container">
+      <!-- Header Section -->
+      <div class="home-header">
+        <div class="welcome-text">
+          <span>Hi</span>
+          <span id="userName" class="user-name"></span>
         </div>
-        <img src="images/star.png" alt="stamp" class="stamp-icon" />
+        <p class="home-subtitle">Collect stars for your next treat</p>
+      </div>
+
+      <!-- Main Actions -->
+      <div class="action-section">
+        <button class="scan-btn" id="scanQrBtn">Scan QR</button>
+      </div>
+
+      <!-- Beans Total Label (outside the card) -->
+      <h2 class="beans-title-outside">Total Stamps</h2>
+
+      <!-- Beans Total Card -->
+      <section class="beans-card">
+        <div class="beans-visual">
+          <div class="beans-count">
+            <span id="currentStamps">0</span>/<span>9</span>
+          </div>
+          <div id="stampGrid" class="stamp-grid"></div>
+        </div>
+        <button id="historyBtn" class="history-link">View history</button>
+      </section>
+
+      <!-- Canteen Menu Button -->
+      <div class="action-section">
+        <button class="menu-btn" id="menuBtn">Canteen Menu</button>
       </div>
     </div>
+  </div>
 
-    <!-- Main Action Button -->
-    <div class="action-section">
-        <button class="scan-btn" id="scanQrBtn">Scan QR</button>
-        <button class="menu-btn">Canteen Menu</button>
-    </div>
-</div>
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <a class="nav-item active" href="home.html">
+      <img src="images/home.svg" alt="Home" />
+      <span>Home</span>
+    </a>
+    <a class="nav-item" href="rewards.html">
+      <img src="images/rewards.svg" alt="Rewards" />
+      <span>Rewards</span>
+    </a>
+    <a class="nav-item" href="settings.html">
+      <img src="images/settings.svg" alt="Settings" />
+      <span>Settings</span>
+    </a>
+  </nav>
 
-
-    <!-- Bottom Nav -->
-    <nav class="bottom-nav">
-      <a class="nav-item active" href="home.html">
-        <img src="images/home.svg" alt="Home" />
-        <span>Home</span>
-      </a>
-      <a class="nav-item" href="rewards.html">
-        <img src="images/rewards.svg" alt="Rewards" />
-        <span>Rewards</span>
-      </a>
-      <a class="nav-item" href="settings.html">
-        <img src="images/settings.svg" alt="Settings" />
-        <span>Settings</span>
-      </a>
-    </nav>
-    
-</div>
-<script type="module" src="scripts/home.js"></script>
-
-
+  <script type="module" src="scripts/home.js" defer></script>
 </body>
 </html>

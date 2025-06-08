@@ -1,7 +1,6 @@
 .home-container {
   flex: 1;
   padding: 20px;
-  background-color: #fde6ef;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -9,10 +8,9 @@
 
 
 .home-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
+  position: relative;
+  overflow: visible; /* allow the wave to spill down */
+  padding-bottom: 2rem; /* give space for the wave curve */
 }
 
 .action-section {
@@ -35,6 +33,26 @@
   font-weight: 700;
   font-size: 22px;
   color: #4c0025;
+}
+
+/* —— Stamp grid uses star icons instead of boxes —— */
+.stamp-grid {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 8px 0;
+}
+
+/* Empty star icon only – no box */
+.stamp {
+  width: 24px;
+  height: 24px;
+  background: url('../images/star-empty.png') center/contain no-repeat;
+}
+
+/* Filled star icon */
+.stamp.filled {
+  background: url('../images/star-filled.png') center/contain no-repeat;
 }
 
 .stamp-count {
@@ -90,7 +108,7 @@
   font-weight: 600;
   padding: 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 35px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -105,7 +123,7 @@
   font-weight: 600;
   padding: 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 35px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -127,3 +145,93 @@
   }
 }
 
+/* —— Beans Total card —— */
+.beans-card {
+  background: #fff;
+  border-radius: 35px;
+  padding: 16px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.beans-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4c0025;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  letter-spacing: 0.5px;
+}
+
+.beans-visual {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+/* Beans Total number styling – big current, small total */
+/* Beans Total label outside the card */
+.beans-title-outside {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4c0025;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+.beans-count {
+  display: flex;
+  align-items: baseline;
+  font-weight: 700;
+  color: #ec008c;
+}
+.beans-count span:first-child {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #ec008c;
+  line-height: 1;
+}
+.beans-count span:last-child {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ec008c;
+  line-height: 1;
+}
+
+.beans-visual .stamp-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  flex: 1;
+  margin: 0 12px;
+}
+
+.beans-visual .stamp {
+  width: 40px;
+}
+
+.beans-visual .stamp.filled {
+  background-image: url('../images/star-filled.png');
+  background-size: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.cup-icon {
+  width: 40px;
+  height: 40px;
+  background: url('../images/coffee-cup.png') center/contain no-repeat;
+}
+
+.history-link {
+  background: none;
+  border: none;
+  color: #ec008c;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+}
