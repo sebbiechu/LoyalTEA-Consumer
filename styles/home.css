@@ -1,3 +1,8 @@
+#pageWrapper {
+  background: white;
+  height: 100%;
+}
+
 .home-container {
   flex: 1;
   padding: 20px;
@@ -20,8 +25,6 @@
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
-
-
 
 .welcome-text {
   font-size: 18px;

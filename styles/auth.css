@@ -63,13 +63,16 @@
 
 .member-text {
   font-size: 14px;
-  color: #800020;
+  color: #ffffff;
   margin-bottom: 10px;
+}
+
+.member-text a {
+  color: #ffffff;
 }
 
 /* ---------- Register Page Redesign ---------- */
 .register-header-block {
-  background-color: #f4dfdb;
   padding: 24px 20px 16px;
   text-align: center;
 }
@@ -180,10 +183,11 @@ input[type="checkbox"] {
 }
 
 .badge.met {
-  background-color: #ec008c20;
+  background-color: #91204D;;
   border-color: #ec008c;
-  color: #ec008c;
-  font-weight: 600;
+  color: #ffffff;
+  font-weight: 700;
+  border: 1px solid #ffffff;
 }
 
 .form-footer {
@@ -195,12 +199,18 @@ input[type="checkbox"] {
   margin-top: auto;
 }
 
+.form-group input:focus {
+  outline: none;
+  border: 2px solid #F7F5EA; /* Or your chosen highlight color */
+  background-color: transparent;
+}
+
 .submit-btn {
-  background-color: #ec008c;
-  color: white;
+  background-color: #ffffff;
+  color: #91204D;
   font-size: 15px;
   font-weight: 600;
-  border: none;
+  border: 1px solid white;
   border-radius: 30px;
   padding: 14px;
   width: 100%;
@@ -227,5 +237,21 @@ input[type="checkbox"] {
 
 .hidden {
   display: none !important;
+}
+
+.form-group input {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  background: transparent;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 
