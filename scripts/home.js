@@ -12,7 +12,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuBtn           = document.getElementById("menuBtn");
   const wrapper           = document.getElementById("pageWrapper");
 
-  // QR transition (unchanged)
+  // 🔁 Show cached name & stamps instantly
+  const cachedName = localStorage.getItem("firstName");
+  if (cachedName && userNameDisplay) {
+    userNameDisplay.textContent = cachedName;
+  }
+
+  const cachedStamps = localStorage.getItem("stamps");
+  if (cachedStamps && currentStampsDisp) {
+    currentStampsDisp.textContent = cachedStamps;
+    drawStamps(parseInt(cachedStamps, 10));
+  }
+
+  // 👉 Button navigation
   if (scanBtn && wrapper) {
     scanBtn.addEventListener("click", e => {
       e.preventDefault();
@@ -23,15 +35,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // “View history” and “Menu” buttons:
   historyBtn?.addEventListener("click", () => {
     window.location.href = "redeem-history.html";
   });
+
   menuBtn?.addEventListener("click", () => {
     window.location.href = "menu.html";
   });
 
-  // Auth + Firestore lookup
+  // 🔄 Re-fetch user data from Firestore
   auth.onAuthStateChanged(async user => {
     if (!user) {
       console.warn("No user signed in. Redirecting…");
@@ -39,49 +51,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const userRef  = doc(db, "users", user.uid);
+      const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
       if (!userSnap.exists()) {
         throw new Error("User doc missing");
       }
-      const data      = userSnap.data();
+
+      const data = userSnap.data();
       const firstName = data.firstName || "friend";
-      const stamps    = data.stamps    || 0;
+      const stamps = data.stamps || 0;
 
-      // 1) Name
-      userNameDisplay.textContent = firstName;
+      if (userNameDisplay) {
+        userNameDisplay.textContent = firstName;
+        localStorage.setItem("firstName", firstName);
+      }
 
-      // 2) Number in big “0/9”
       if (currentStampsDisp) {
         currentStampsDisp.textContent = stamps;
+        localStorage.setItem("stamps", stamps);
       }
 
-      // 3) Draw the 9-star grid + cup
-      if (stampGrid) {
-        stampGrid.innerHTML = "";
-        for (let i = 1; i <= 9; i++) {
-          const cell = document.createElement("div");
-          cell.className = "stamp" + (i <= stamps ? " filled" : "");
-          stampGrid.appendChild(cell);
-        }
-        // Finally, append the “cup” icon cell
-        const cup = document.createElement("div");
-        cup.className = "stamp cup";
-        stampGrid.appendChild(cup);
-      }
-      if (stampGrid) {
-      stampGrid.innerHTML = "";
-      for (let i = 1; i <= 9; i++) {
-      const cell = document.createElement("div");
-      cell.className = "stamp" + (i <= stamps ? " filled" : "");
-      stampGrid.appendChild(cell);
-      }
-    }
-
+      drawStamps(stamps);
     } catch (err) {
       console.error("Error getting user data:", err);
       if (userNameDisplay) userNameDisplay.textContent = "friend";
       if (currentStampsDisp) currentStampsDisp.textContent = "0";
     }
   });
+
+  // ✅ Draw stamps based on count (filled stars + final cup)
+  function drawStamps(count) {
+    if (!stampGrid) return;
+    stampGrid.innerHTML = "";
+    for (let i = 1; i <= 9; i++) {
+      const cell = document.createElement("div");
+      cell.className = "stamp" + (i <= count ? " filled" : "");
+      stampGrid.appendChild(cell);
+    }
+    const cup = document.createElement("div");
+    cup.className = "stampcup";
+    stampGrid.appendChild(cup);
+  }
 });

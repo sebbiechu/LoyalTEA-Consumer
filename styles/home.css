@@ -51,12 +51,20 @@
   margin: 8px 0;
 }
 
+.stampcup {
+  width: 40px;
+  height: 30px;
+  background: url('../images/free-grey.png') center/contain no-repeat;
+}
+
 /* Empty star icon only – no box */
 .stamp {
   width: 24px;
   height: 24px;
   background: url('../images/star-empty.png') center/contain no-repeat;
 }
+
+
 
 /* Filled star icon */
 .stamp.filled {
@@ -118,8 +126,10 @@
   border-radius: 25px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  height: 80px;
+  text-align: left;
+  padding-left: 30px;
+  height: 130px;
+  
 }
 
 .menu-btn {
@@ -132,8 +142,13 @@
   border-radius: 25px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  height: 80px;
+  text-align: left;
+  padding-left: 30px;
+  height: 130px;
+    background: url(../images/canteen.jpg);
+  background-repeat: no-repeat;
+  background-size: cover; 
+  background-position: bottom 0px right 0px;
 }
 
 .page-slide-out-left {

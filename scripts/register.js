@@ -71,6 +71,8 @@ passwordInput.addEventListener("input", () => {
         rewardClaimed: false
       });
 
+      localStorage.setItem("firstName", firstName);
+
       console.log("✅ User registered");
       window.location.href = "home.html";
     } catch (error) {
