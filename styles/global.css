@@ -2,7 +2,7 @@ body, html {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background-color: #af0161;
+  background-color: #91204D;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -65,7 +65,7 @@ body, html {
 .register-header-block {
   padding: 24px 20px 16px;
   text-align: center;
-  background: #fff;
+  background: transparent;
 }
 
 
