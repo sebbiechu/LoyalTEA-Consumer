@@ -17,6 +17,7 @@
   justify-content: center;
   gap: 12px;
   padding: 0 16px;
+  margin-top: 100px;
   margin-bottom: 100px;
 }
 
@@ -75,7 +76,7 @@
   padding: 14px 24px;
   font-size: 16px;
   border-radius: 12px;
-  background-color: #ec008c;
+  background-color: #91204D;
   color: white;
   font-weight: 600;
   cursor: pointer;

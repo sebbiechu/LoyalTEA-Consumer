@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   menuBtn?.addEventListener("click", () => {
-    window.location.href = "menu.html";
+    //window.location.href = "menu.html";
   });
 
   // 🔄 Re-fetch user data from Firestore
