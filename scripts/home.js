@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   auth.onAuthStateChanged(async user => {
     if (!user) {
       console.warn("No user signed in. Redirecting…");
-      return window.location.href = "login.html";
+      return window.location.href = "index.html";
     }
 
     try {
