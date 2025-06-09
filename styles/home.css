@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.home-subtitle {
+  margin-top:0;
+}
+
 .home-container {
   flex: 1;
   padding: 20px;
@@ -106,32 +110,30 @@
 
 .scan-btn {
   flex: 1;
-  background-color: #ec008c;
+  background-color: #af0161;
   color: white;
   font-size: 16px;
   font-weight: 600;
-  padding: 20px;
   border: none;
-  border-radius: 35px;
+  border-radius: 25px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  height: 100px;
+  height: 80px;
 }
 
 .menu-btn {
   flex: 1;
-  background-color: #ec008c;
+  background-color: #af0161;
   color: white;
   font-size: 16px;
   font-weight: 600;
-  padding: 20px;
   border: none;
-  border-radius: 35px;
+  border-radius: 25px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  height: 100px;
+  height: 80px;
 }
 
 .page-slide-out-left {
@@ -189,18 +191,18 @@
   display: flex;
   align-items: baseline;
   font-weight: 700;
-  color: #ec008c;
+  color: #af0161;
 }
 .beans-count span:first-child {
   font-size: 4rem;
   font-weight: 700;
-  color: #ec008c;
+  color: #af0161;
   line-height: 1;
 }
 .beans-count span:last-child {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #ec008c;
+  color: #af0161;
   line-height: 1;
 }
 
@@ -232,7 +234,7 @@
 .history-link {
   background: none;
   border: none;
-  color: #ec008c;
+  color: #af0161;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;

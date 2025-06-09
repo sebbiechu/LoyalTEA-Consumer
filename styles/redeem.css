@@ -29,14 +29,14 @@ body {
 }
 
 .stamp.filled {
-  background-image: url('../images/bean.svg');
+  background-image: url('../images/star.png');
   background-size: 28px;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .stamp.cup {
-  background-image: url('../images/coffee-cup.png');
+  background-image: url('../images/star1.png');
   background-size: 34px;
   background-repeat: no-repeat;
   background-position: center;

@@ -2,7 +2,7 @@ body, html {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background-color: #91204D;
+  background-color: #af0161;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@ body, html {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color:#91204D;
+  background-color:#af0161;
   border-radius: 20px 20px 0 0;
   padding: 20px 0;
   border-top: 1px solid #ddd;
