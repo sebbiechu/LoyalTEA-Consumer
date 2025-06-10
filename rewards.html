@@ -4,42 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LoyalTEA – Rewards</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles/global.css" />
   <link rel="stylesheet" href="styles/rewards.css" />
 </head>
 <body>
-  <!-- Top Header -->
-  <div class="register-header-block">
-    <h1 class="register-heading"><span>Loyal</span>TEA Rewards</h1>
+  <!-- Header Banner -->
+  <div class="rewards-banner">
+    <h1 class="banner-title">YOUR <span>REWARDS</span></h1>
+    <p class="banner-subtitle">Treat Yourself</p>
   </div>
 
-  <!-- Main Content -->
+  <!-- Rewards Section -->
   <div class="rewards-container">
-    <p class="subtitle">Claim your reward once you collect all 9 stamps!</p>
 
-    <!-- Removed the stampGrid entirely -->
-
-    <main class="reward-options">
-      <div class="reward-card" id="coffeeReward">
-        <img src="images/coffee_bean.svg" alt="Free Coffee" class="reward-icon" />
-        <p class="reward-label">1 Free Coffee</p>
-      </div>
-      <div class="reward-card" id="teaReward">
-        <span class="reward-badge" id="teaBadge">1/2</span>
-        <img src="images/tea_bag.png" alt="2 Free Teas" class="reward-icon" />
-        <p class="reward-label">2 Free Teas</p>
-      </div>
-    </main>
+    <div id="rewardsGroup" class="rewards-group hidden">
+  <div class="reward-card">
+    <img src="images/englishtea.jpeg" class="reward-icon round" alt="Tea" />
+    <div class="reward-text">
+      <p class="reward-title">FREE BREAKFAST TEA</p>
+      <p class="reward-subtext">Redeem at till</p>
+    </div>
   </div>
 
-  <!-- Fixed “Use at Till” Footer -->
-  <footer class="action-footer">
-    <button id="confirmRewardBtn" class="confirm-btn" disabled>Use at Till</button>
-  </footer>
+  <div class="reward-card">
+    <img src="images/englishtea.jpeg" class="reward-icon round" alt="Tea" />
+    <div class="reward-text">
+      <p class="reward-title">FREE BREAKFAST TEA</p>
+      <p class="reward-subtext">Redeem at till</p>
+    </div>
+  </div>
+
+  <div class="or-divider"><span>or</span></div>
+
+  <div class="reward-card">
+    <img src="images/latte.jpg" class="reward-icon round" alt="Coffee" />
+    <div class="reward-text">
+      <p class="reward-title">FREE COFFEE</p>
+      <p class="reward-subtext">Redeem at till</p>
+    </div>
+  </div>
+</div>
+
+
+    <p id="noRewards" class="no-rewards-message">Collect 9 stamps to unlock your rewards!</p>
+  </div>
 
   <!-- Bottom Navigation -->
   <nav class="bottom-nav">
@@ -57,8 +66,6 @@
     </a>
   </nav>
 
-  <!-- Updated JavaScript (no more stampGrid or addStampBtn references) -->
-<script type="module" src="scripts/rewards.js" defer></script>
-
+  <script type="module" src="scripts/rewards.js" defer></script>
 </body>
 </html>
