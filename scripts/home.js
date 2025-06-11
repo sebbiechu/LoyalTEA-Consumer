@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const historyBtn        = document.getElementById("historyBtn");
   const menuBtn           = document.getElementById("menuBtn");
   const wrapper           = document.getElementById("pageWrapper");
+  const qrModal           = document.getElementById('qrScannerModal');
+  const closeQrModal      = document.getElementById('closeQrModal');
+  const qrStatus          = document.getElementById('qrStatus');
+  let html5QrCode         = null;
 
   // 🔁 Show cached name & stamps instantly
   const cachedName = localStorage.getItem("firstName");
@@ -25,16 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 👉 Button navigation
-  if (scanBtn && wrapper) {
-    scanBtn.addEventListener("click", e => {
-      e.preventDefault();
-      wrapper.classList.add("page-slide-out-left");
-      setTimeout(() => {
-        window.location.href = "qr.html";
-      }, 400);
-    });
-  }
-
   historyBtn?.addEventListener("click", () => {
     window.location.href = "redeem-history.html";
   });
@@ -92,4 +86,69 @@ document.addEventListener("DOMContentLoaded", () => {
     cup.className = "stampcup";
     stampGrid.appendChild(cup);
   }
+
+  scanBtn.addEventListener('click', () => {
+    qrModal.style.display = 'flex';
+    qrStatus.textContent = 'Align the staff QR code within the frame.';
+    startQrScanner();
+  });
+
+  closeQrModal.addEventListener('click', () => {
+    stopQrScanner();
+    qrModal.style.display = 'none';
+    qrStatus.textContent = '';
+  });
+
+  function startQrScanner() {
+    const qrRegionId = "qr-reader";
+    if (!html5QrCode) {
+      html5QrCode = new Html5Qrcode(qrRegionId);
+    }
+    html5QrCode.start(
+      { facingMode: "environment" },
+      {
+        fps: 10,
+        qrbox: 250
+      },
+      qrCodeMessage => {
+        // Handle the scanned QR code here
+        qrStatus.textContent = "Scanned! Processing...";
+        stopQrScanner();
+        qrModal.style.display = 'none';
+        processStaffQr(qrCodeMessage);
+      },
+      errorMessage => {
+        // Optionally show scan errors
+        // qrStatus.textContent = errorMessage;
+      }
+    ).catch(err => {
+      qrStatus.textContent = "Camera error: " + err;
+    });
+  }
+
+  function stopQrScanner() {
+    if (html5QrCode && html5QrCode.getState() === Html5QrcodeScannerState.SCANNING) {
+      html5QrCode.stop().catch(() => {});
+    }
+    // Clear the camera preview
+    document.getElementById('qr-reader').innerHTML = '';
+  }
+
+  // Example: handle the scanned staff QR code
+  function processStaffQr(qrData) {
+    // You should validate and send this to your backend/Firebase
+    // Example: show a message
+    alert("Staff QR scanned: " + qrData);
+
+    // TODO: Add your logic to award a stamp here
+  }
+
+  // Optional: Close modal if user clicks outside modal-content
+  qrModal.addEventListener('click', (e) => {
+    if (e.target === qrModal) {
+      stopQrScanner();
+      qrModal.style.display = 'none';
+      qrStatus.textContent = '';
+    }
+  });
 });

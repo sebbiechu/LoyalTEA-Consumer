@@ -25,6 +25,15 @@
         <button class="scan-btn" id="scanQrBtn">Scan QR</button>
       </div>
 
+      <!-- QR Scanner Modal -->
+      <div id="qrScannerModal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span id="closeQrModal" class="close">&times;</span>
+          <div id="qr-reader" style="width:100%;"></div>
+          <p id="qrStatus" style="text-align:center; margin-top:10px;"></p>
+        </div>
+      </div>
+
       <!-- Beans Total Label (outside the card) -->
       <h2 class="beans-title-outside">Total Stamps</h2>
 
@@ -62,6 +71,7 @@
     </a>
   </nav>
 
+  <script src="https://unpkg.com/html5-qrcode"></script>
   <script type="module" src="scripts/home.js" defer></script>
 </body>
 </html>
