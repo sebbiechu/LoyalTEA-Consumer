@@ -12,7 +12,6 @@ import {
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const grid         = document.querySelector(".stamp-grid");
   const logContainer = document.getElementById("redeemLogs");
 
   onAuthStateChanged(auth, async (user) => {
@@ -22,29 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      // ── 1) Build the top‐grid of stamps (1–9 plus cup) ──
-      const userRef  = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-      const userData = userSnap.data();
-      const currentStamps = userData.stamps || 0;
-
-      grid.innerHTML = "";
-      for (let i = 1; i <= 9; i++) {
-        const stamp = document.createElement("div");
-        stamp.classList.add("stamp");
-        if (i <= currentStamps) {
-          stamp.classList.add("filled");
-          stamp.textContent = ""; // the filled bean icon comes from CSS
-        } else {
-          stamp.textContent = i;  // show number for unfilled
-        }
-        grid.appendChild(stamp);
-      }
-      const cup = document.createElement("div");
-      cup.classList.add("stamp", "cup");
-      grid.appendChild(cup);
-
-      // ── 2) Clear any old logs and fetch the “redeems” for this user ──
+      // ── 1) Clear any old logs and fetch the “redeems” for this user ──
       logContainer.innerHTML = "";
       const redeemQuery = query(
         collection(db, "redeems"),
@@ -61,20 +38,38 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // ── 3) Loop through each document and render a log entry ──
+      // ── 2) Loop through each document and render a log entry ──
       redeemSnap.forEach(docSnapshot => {
         const log = docSnapshot.data();
 
         // Format Firestore timestamp into “DD MMMM YYYY”
         let formattedDate = "";
-        if (log.date && log.date.toDate) {
-          const d = log.date.toDate();
-          formattedDate = d.toLocaleDateString("en-GB", {
-            day:   "2-digit",
-            month: "long",
-            year:  "numeric"
-          });
-        }
+if (log.date) {
+  // If log.date is a Firestore Timestamp object:
+  if (typeof log.date.toDate === "function") {
+    const d = log.date.toDate();
+    formattedDate = d.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+  // If log.date is a string (fallback):
+  else if (typeof log.date === "string") {
+    const d = new Date(log.date);
+    formattedDate = d.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+}
+
+        
 
         const logBlock = document.createElement("div");
         logBlock.classList.add("redeem-log");

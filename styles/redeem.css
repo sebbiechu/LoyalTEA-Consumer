@@ -6,44 +6,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-/* Stamp Grid */
-.stamp-grid {
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  padding: 2.5rem 2rem 2rem;
-  background-color: #f4dfd9;
-  justify-items: center;
-}
-
-
-.stamp {
-  width: 64px;
-  height: 64px;
-  background-color: #fff;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.stamp.filled {
-  background-image: url('../images/star.png');
-  background-size: 28px;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.stamp.cup {
-  background-image: url('../images/star1.png');
-  background-size: 34px;
-  background-repeat: no-repeat;
-  background-position: center;
-  border: none;
-  box-shadow: none;
-}
-
 /* Tab Bar */
 .log-tabs {
   display: flex;
@@ -60,14 +22,13 @@ body {
   cursor: default;
 }
 
-
 /* Redeem Logs */
 .redeem-log-section {
   background-color: #fff;
-  margin: 0; /* no margin causing gaps */
-  width: 100vw; /* full viewport width */
+  margin: 0;
+  width: 100vw;
   box-sizing: border-box;
-  border-radius: 0; /* ensure no rounding */
+  border-radius: 0;
 }
 
 /* Redeem Logs wrapper */
@@ -75,10 +36,7 @@ body {
   background-color: #fff;
   width: 100vw;
   box-sizing: border-box;
-  min-height: 100vh; /* always cover the full viewport height in white */
 }
-
-
 
 .redeem-log {
   margin-bottom: 2rem;
@@ -108,4 +66,12 @@ body {
   width: 18px;
   height: 18px;
   margin-right: 0.5rem;
+}
+
+/* Optional: Show different icons for tea/coffee */
+.redeem-entry.coffee::before {
+  content: url('../images/coffee_bean.svg');
+}
+.redeem-entry.tea::before {
+  content: url('../images/tea_bag.svg');
 }
