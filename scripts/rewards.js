@@ -1,16 +1,15 @@
 // File: scripts/rewards.js
 
+import QrScanner from "https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.min.js";
 import { auth, db } from "./firebase-init.js";
 import {
   doc,
   getDoc,
   updateDoc,
-  setDoc,
-  collection,
-  addDoc
+  addDoc,
+  collection
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-import { Html5Qrcode } from "https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"; // ensure this matches your import source
 
 // --- DOM Elements ---
 const coffeeCard    = document.getElementById("coffeeCard");
@@ -26,27 +25,43 @@ const teaUsesText   = document.getElementById("teaUses");
 const scanModal     = document.getElementById("scanModal");
 const closeScanBtn  = document.getElementById("closeScanBtn");
 const scanStatus    = document.getElementById("scanStatus");
-let html5QrScanner  = null;
+const qrReaderElem  = document.getElementById("qr-reader");
+let qrScanner       = null;
+let scanActive      = false;
 
 // State
 let userDocRef, userData, userId;
-let hasScanned = false;   // ← new: prevent multiple scans
 
 // --- Helper Functions ---
 function updateRewardDisplay() {
-  const stamps = userData?.stamps || 0;
+  const stamps = Number(userData?.stamps) || 0;
   const teaRedeemed = userData?.teaRedeemed || 0;
+  const rewardsContainer = document.querySelector('.rewards-container');
 
+  console.log("DEBUG updateRewardDisplay: stamps=", stamps, "userData.stamps=", userData?.stamps, typeof userData?.stamps);
+
+  // Always hide both at the start to prevent flicker
+  rewardsContainer.style.display = "none";
+  hideNoRewardsMessage();
+
+  // Show empty state if not enough stamps
   if (stamps < 9) {
-    coffeeCard.style.display = "none";
-    teaCard.style.display    = "none";
-    useBtn.style.display      = "none";
-    noRewardsMsg.style.display = "";
+    showNoRewardsMessage("No rewards yet! Sip, stamp, and unlock your next treat when you reach 9 stamps.");
     return;
   }
 
-  noRewardsMsg.style.display = "none";
-  useBtn.style.display       = "";
+  // Reset if stuck at 9 stamps & 2 teas used
+  if (stamps >= 9 && teaRedeemed >= 2) {
+    if (userDocRef) {
+      updateDoc(userDocRef, { stamps: 0, teaRedeemed: 0 });
+      setTimeout(fetchUserData, 300); // let Firestore update
+    }
+    return;
+  }
+
+  // At this point, rewards are available – show the container
+  rewardsContainer.style.display = "block";
+  hideNoRewardsMessage();
 
   if (teaRedeemed === 0) {
     coffeeCard.style.display = "";
@@ -63,6 +78,58 @@ function updateRewardDisplay() {
   }
 }
 
+// --- Show/hide empty state message ---
+function showNoRewardsMessage(msg) {
+  let existing = document.getElementById('emptyStateMsg');
+  if (!existing) {
+    const div = document.createElement('div');
+    div.id = 'emptyStateMsg';
+    div.style.textAlign = 'center';
+    div.style.margin = '48px auto 0';
+    div.style.color = '#91204D';
+    div.style.fontWeight = '500';
+    div.style.fontSize = '1.13rem';
+    div.textContent = msg;
+    document.querySelector('.rewards-banner').after(div);
+  } else {
+    existing.textContent = msg;
+  }
+}
+function hideNoRewardsMessage() {
+  let existing = document.getElementById('emptyStateMsg');
+  if (existing) existing.remove();
+}
+
+// --- Rewards badge logic ---
+function updateRewardsBadge() {
+  const badge = document.getElementById('rewardsBadge');
+  const count = Number(userData?.stamps) || 0;
+  if (badge) {
+    if (count >= 9) {
+      badge.style.display = "flex";
+      badge.textContent = "1"; // Change if you ever want more than one reward
+    } else {
+      badge.style.display = "none";
+    }
+  }
+}
+
+// --- Stamp earning logic for staff QR scan ---
+async function earnStamp() {
+  if (!userDocRef) {
+    console.error("No userDocRef!"); // Debug log
+    return;
+  }
+  const now = new Date().toUTCString();
+  const snap = await getDoc(userDocRef);
+  const data = snap.exists() ? snap.data() : {};
+  const newStamps = (Number(data.stamps) || 0) + 1;
+  console.log("Updating stamps from", data.stamps, "to", newStamps); // Debug
+  await updateDoc(userDocRef, { stamps: newStamps, lastStampedAt: now });
+}
+
+
+// --- Selection Events ---
 function clearSelection() {
   coffeeCard.classList.remove("selected");
   teaCard.classList.remove("selected");
@@ -70,8 +137,6 @@ function clearSelection() {
   teaRadio.checked    = false;
   useBtn.disabled     = true;
 }
-
-// --- Selection Events ---
 coffeeCard.addEventListener("click", () => {
   if (coffeeCard.style.display === "none") return;
   coffeeRadio.checked = true;
@@ -90,70 +155,85 @@ teaCard.addEventListener("click", () => {
 });
 
 // --- “Use at till” Button ---
-useBtn.addEventListener("click", () => {
+useBtn.addEventListener("click", async () => {
   const rewardType = coffeeRadio.checked ? "Coffee" : teaRadio.checked ? "Tea" : null;
   if (!rewardType) return;
-  startStaffScan(rewardType);
+  await startStaffScan(rewardType);
 });
 
-// --- Start QR Scan (one-and-done) ---
-function startStaffScan(rewardType) {
-  hasScanned = false;
+// --- Start QR Scan (one-and-done, staff QR earns stamp or redeems reward) ---
+async function startStaffScan(rewardType) {
+  scanActive = true;
   scanStatus.textContent = "Scan the staff QR code at the till…";
   scanModal.classList.remove("hidden");
 
-  html5QrScanner = new Html5Qrcode("qr-reader");
-  html5QrScanner.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 220 },
-    async decodedText => {
-      if (hasScanned) return;          // ignore repeats
-      hasScanned = true;
+  // Clean up any previous scanner/camera
+  if (qrScanner) {
+    qrScanner.destroy();
+    qrScanner = null;
+  }
+  qrReaderElem.srcObject = null; // Just in case
+
+  qrScanner = new QrScanner(
+    qrReaderElem,
+    async result => {
+      if (!scanActive) return;
+      scanActive = false;
+      qrScanner.stop();
 
       let data;
       try {
-        data = JSON.parse(decodedText);
+        data = JSON.parse(result.data);
       } catch {
         scanStatus.textContent = "Invalid QR code format.";
-        await stopScanner();
+        setTimeout(() => {
+          scanModal.classList.add("hidden");
+          clearSelection();
+        }, 900);
         return;
       }
 
-      // single staff code expected
       if (data.type === "staff" && data.code === "LOYALTEA") {
-        scanStatus.textContent = "Redeeming your reward…";
-        await redeemReward(rewardType);
-        scanStatus.textContent = "Reward redeemed! Enjoy your drink.";
+        await fetchUserData(); // Get up-to-date stamp count
+        const stamps = Number(userData?.stamps) || 0;
+        if (stamps < 9) {
+          scanStatus.textContent = "Adding your stamp…";
+          await earnStamp();
+          scanStatus.textContent = "Stamp earned! Enjoy your drink.";
+        } else {
+          scanStatus.textContent = "Redeeming your reward…";
+          await redeemReward(rewardType);
+          scanStatus.textContent = "Reward redeemed! Enjoy your drink.";
+        }
       } else {
         scanStatus.textContent = "Invalid staff QR code. Please try again.";
       }
 
-      await stopScanner();
       setTimeout(() => {
         scanModal.classList.add("hidden");
         fetchUserData();
         clearSelection();
-      }, 800);
+      }, 1000);
     },
-    errorMsg => {
-      // optional: console.warn("QR error", errorMsg);
+    {
+      preferredCamera: 'environment',
+      highlightScanRegion: true,
+      highlightCodeOutline: true
     }
   );
+
+  qrScanner.start();
 }
 
-// Stop & clear the scanner
-async function stopScanner() {
-  if (!html5QrScanner) return;
-  await html5QrScanner.stop();
-  html5QrScanner.clear();
-  html5QrScanner = null;
-}
-
-// --- Cancel Scan ---
-closeScanBtn.addEventListener("click", async () => {
+closeScanBtn.addEventListener("click", () => {
+  scanActive = false;
+  if (qrScanner) {
+    qrScanner.stop();
+    qrScanner.destroy();
+    qrScanner = null;
+  }
   scanModal.classList.add("hidden");
   scanStatus.textContent = "";
-  await stopScanner();
   clearSelection();
 });
 
@@ -179,6 +259,10 @@ async function redeemReward(type) {
     count: type === "Coffee" ? 1 : teaRedeemed,
     total: type === "Coffee" ? 1 : 2
   });
+
+  // Hide rewards container and clear selection right after redemption
+  document.querySelector('.rewards-container').style.display = "none";
+  clearSelection();
 }
 
 // --- Fetch & Render User Data ---
@@ -192,10 +276,13 @@ async function fetchUserData() {
     userDocRef = doc(db, "users", userId);
     const snap = await getDoc(userDocRef);
     userData    = snap.exists() ? snap.data() : {};
-    updateRewardDisplay();
+    updateRewardDisplay();    // <--- Only call here, AFTER snap!
+    updateRewardsBadge();
     clearSelection();
   });
 }
+
+
 
 // --- Init on page load ---
 document.addEventListener("DOMContentLoaded", fetchUserData);

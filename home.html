@@ -22,7 +22,7 @@
 
       <!-- Main Actions -->
       <div class="action-section">
-        <button class="scan-btn" id="scanQrBtn">Scan QR</button>
+        <button id="scanStampBtn" class="use-btn">Scan at Till</button>
       </div>
 
       <!-- QR Scanner Modal -->
@@ -56,22 +56,25 @@
   </div>
 
   <!-- Bottom Nav -->
-  <nav class="bottom-nav">
-    <a class="nav-item active" href="home.html">
-      <img src="images/home.svg" alt="Home" />
-      <span>Home</span>
-    </a>
-    <a class="nav-item" href="rewards.html">
-      <img src="images/rewards.svg" alt="Rewards" />
-      <span>Rewards</span>
-    </a>
-    <a class="nav-item" href="settings.html">
-      <img src="images/settings.svg" alt="Settings" />
-      <span>Settings</span>
-    </a>
-  </nav>
+<nav class="bottom-nav">
+  <a href="home.html" class="nav-item">
+    <img src="images/home.svg" alt="Home"/>
+    <span>Home</span>
+  </a>
+  <a href="rewards.html" class="nav-item active" id="rewardsNav">
+    <img src="images/rewards.svg" alt="Rewards"/>
+    <span>Rewards</span>
+    <!-- The badge will go here -->
+    <span id="rewardsBadge" class="nav-badge" style="display: none;">1</span>
+  </a>
+  <a href="settings.html" class="nav-item">
+    <img src="images/settings.svg" alt="Settings"/>
+    <span>Settings</span>
+  </a>
+</nav>
 
   <script src="https://unpkg.com/html5-qrcode"></script>
   <script type="module" src="scripts/home.js" defer></script>
+  <script type="module" src="scripts/global.js" defer></script>
 </body>
 </html>

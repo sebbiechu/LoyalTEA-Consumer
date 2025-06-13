@@ -1,13 +1,13 @@
 // scripts/home.js
 import { auth } from "./firebase-init.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { db } from "./firebase-init.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const userNameDisplay   = document.getElementById("userName");
   const currentStampsDisp = document.getElementById("currentStamps");
   const stampGrid         = document.getElementById("stampGrid");
-  const scanBtn           = document.getElementById("scanQrBtn");
+  const scanBtn = document.getElementById("scanStampBtn");
   const historyBtn        = document.getElementById("historyBtn");
   const menuBtn           = document.getElementById("menuBtn");
   const wrapper           = document.getElementById("pageWrapper");
@@ -111,7 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
         qrbox: 250
       },
       qrCodeMessage => {
-        // Handle the scanned QR code here
         qrStatus.textContent = "Scanned! Processing...";
         stopQrScanner();
         qrModal.style.display = 'none';
@@ -127,20 +126,65 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function stopQrScanner() {
-    if (html5QrCode && html5QrCode.getState() === Html5QrcodeScannerState.SCANNING) {
+    if (html5QrCode && html5QrCode.getState && html5QrCode.getState() === 2) {
       html5QrCode.stop().catch(() => {});
     }
     // Clear the camera preview
-    document.getElementById('qr-reader').innerHTML = '';
+    const reader = document.getElementById('qr-reader');
+    if (reader) reader.innerHTML = '';
   }
 
-  // Example: handle the scanned staff QR code
-  function processStaffQr(qrData) {
-    // You should validate and send this to your backend/Firebase
-    // Example: show a message
-    alert("Staff QR scanned: " + qrData);
+  // --- MAIN UPDATED LOGIC HERE ---
+  async function processStaffQr(qrData) {
+    // 1. Parse QR data as JSON
+    let data;
+    try {
+      data = JSON.parse(qrData);
+    } catch {
+      alert("Invalid QR code format.");
+      return;
+    }
 
-    // TODO: Add your logic to award a stamp here
+    // 2. Check staff code
+    if (data.type === "staff" && data.code === "LOYALTEA") {
+      // Award a stamp!
+      try {
+        // Get user doc
+        const user = auth.currentUser;
+        if (!user) {
+          alert("You are not signed in.");
+          return;
+        }
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) {
+          alert("User record not found.");
+          return;
+        }
+        const userData = userSnap.data();
+        const currentStamps = Number(userData.stamps) || 0;
+
+        // If user has <9 stamps, add 1
+        if (currentStamps < 9) {
+          const newStamps = currentStamps + 1;
+          await updateDoc(userRef, { stamps: newStamps, lastStampedAt: new Date().toUTCString() });
+          alert("Stamp earned! You now have " + newStamps + " stamp" + (newStamps > 1 ? "s." : "."));
+          // Optionally: update displayed stamps instantly
+          if (currentStampsDisp) currentStampsDisp.textContent = newStamps;
+          if (stampGrid) drawStamps(newStamps);
+        } else {
+          // If user already has a reward ready, tell them to redeem
+          alert("You have a reward ready! Please redeem it before collecting more stamps.");
+          // Optionally: redirect to rewards page
+          // window.location.href = "rewards.html";
+        }
+      } catch (err) {
+        alert("Error awarding stamp: " + err.message);
+        console.error(err);
+      }
+    } else {
+      alert("Invalid staff QR code. Please try again.");
+    }
   }
 
   // Optional: Close modal if user clicks outside modal-content

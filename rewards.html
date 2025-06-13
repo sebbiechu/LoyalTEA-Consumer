@@ -49,32 +49,35 @@
   </div>
 
   <!-- QR Modal (hidden by default) -->
-<div id="scanModal" class="qr-modal hidden">
-  <div class="qr-modal-content">
-    <div id="qr-reader" style="width: 260px; margin: 0 auto;"></div>
-    <div id="scanStatus" style="margin-top: 18px; color: #91204D; font-weight: 600;"></div>
-    <button id="closeScanBtn" class="use-btn">Cancel</button>
+  <div id="scanModal" class="qr-modal hidden">
+    <div class="qr-modal-content">
+      <video id="qr-reader" style="width: 260px; margin: 0 auto; border-radius: 16px;" muted playsinline></video>
+      <div id="scanStatus" style="margin-top: 18px; color: #91204D; font-weight: 600;"></div>
+      <button id="closeScanBtn" class="use-btn">Cancel</button>
+    </div>
   </div>
-</div>
-
 
   <!-- Bottom Navigation -->
-  <nav class="bottom-nav">
-    <a href="home.html" class="nav-item">
-      <img src="images/home.svg" alt="Home"/>
-      <span>Home</span>
-    </a>
-    <a href="rewards.html" class="nav-item active">
-      <img src="images/rewards.svg" alt="Rewards"/>
-      <span>Rewards</span>
-    </a>
-    <a href="settings.html" class="nav-item">
-      <img src="images/settings.svg" alt="Settings"/>
-      <span>Settings</span>
-    </a>
-  </nav>
+<nav class="bottom-nav">
+  <a href="home.html" class="nav-item">
+    <img src="images/home.svg" alt="Home"/>
+    <span>Home</span>
+  </a>
+  <a href="rewards.html" class="nav-item active" id="rewardsNav">
+    <img src="images/rewards.svg" alt="Rewards"/>
+    <span>Rewards</span>
+    <!-- The badge will go here -->
+    <span id="rewardsBadge" class="nav-badge" style="display: none;">1</span>
+  </a>
+  <a href="settings.html" class="nav-item">
+    <img src="images/settings.svg" alt="Settings"/>
+    <span>Settings</span>
+  </a>
+</nav>
+
+  <!-- QRious (if you still use it elsewhere in your app) -->
   <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <!-- Rewards logic, as a module -->
   <script type="module" src="scripts/rewards.js"></script>
 </body>
 </html>

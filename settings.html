@@ -38,24 +38,27 @@
       <button class="logout-button" id="logoutBtn">Log Out</button>
     </div>
   </div>
-
-  <nav class="bottom-nav">
-    <a class="nav-item" href="home.html">
-      <img src="images/home.svg" alt="Home" />
-      <span>Home</span>
-    </a>
-    <a class="nav-item" href="rewards.html">
-      <img src="images/rewards.svg" alt="Rewards" />
-      <span>Rewards</span>
-    </a>
-    <a class="nav-item active" href="settings.html">
-      <img src="images/settings.svg" alt="Settings" />
-      <span>Settings</span>
-    </a>
-  </nav>
+  
+<nav class="bottom-nav">
+  <a href="home.html" class="nav-item">
+    <img src="images/home.svg" alt="Home"/>
+    <span>Home</span>
+  </a>
+  <a href="rewards.html" class="nav-item active" id="rewardsNav">
+    <img src="images/rewards.svg" alt="Rewards"/>
+    <span>Rewards</span>
+    <!-- The badge will go here -->
+    <span id="rewardsBadge" class="nav-badge" style="display: none;">1</span>
+  </a>
+  <a href="settings.html" class="nav-item">
+    <img src="images/settings.svg" alt="Settings"/>
+    <span>Settings</span>
+  </a>
+</nav>
 
 <script type="module" src="scripts/home.js"></script>
 <script type="module" src="scripts/settings.js"></script>
+<script type="module" src="scripts/global.js" defer></script>
 
 </body>
 </html>

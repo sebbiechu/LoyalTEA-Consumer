@@ -124,7 +124,7 @@
   flex-wrap: wrap;
 }
 
-.scan-btn {
+#scanStampBtn {
   flex: 1;
   background-color: #91204D;
   color: white;
