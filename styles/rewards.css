@@ -200,10 +200,26 @@ body, html {
 
 .qr-modal-content {
   background: #fff;
-  padding: 2rem 2rem 1rem;
-  border-radius: 16px;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+#qr-reader {
+  display: block;
+  margin: 0 auto;
+  width: 260px;
+  max-width: 90vw;
+  height: 260px;
+  border-radius: 10px;
+  background: #222;
+  object-fit: cover;
+}
+
+#scanStatus {
   text-align: center;
-  min-width: 270px;
 }
 
 #qrcode {

@@ -197,14 +197,17 @@ async function startStaffScan(rewardType) {
         await fetchUserData(); // Get up-to-date stamp count
         const stamps = Number(userData?.stamps) || 0;
         if (stamps < 9) {
-          scanStatus.textContent = "Adding your stamp…";
-          await earnStamp();
-          scanStatus.textContent = "Stamp earned! Enjoy your drink.";
-        } else {
-          scanStatus.textContent = "Redeeming your reward…";
-          await redeemReward(rewardType);
-          scanStatus.textContent = "Reward redeemed! Enjoy your drink.";
-        }
+  scanStatus.textContent = "Adding your stamp…";
+  await earnStamp();
+  document.getElementById('stampSound')?.play();
+  scanStatus.textContent = "Stamp earned! Enjoy your drink.";
+} else {
+  scanStatus.textContent = "Redeeming your reward…";
+  await redeemReward(rewardType);
+  document.getElementById('rewardSound')?.play();
+  scanStatus.textContent = "Reward redeemed! Enjoy your drink.";
+}
+
       } else {
         scanStatus.textContent = "Invalid staff QR code. Please try again.";
       }

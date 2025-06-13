@@ -140,6 +140,76 @@
   
 }
 
+.qr-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(36, 34, 35, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.qr-modal.hidden {
+  display: none;
+}
+
+.qr-modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+#qr-reader {
+  display: block;
+  margin: 0 auto;
+  width: 260px;
+  max-width: 90vw;
+  height: 260px;
+  border-radius: 10px;
+  background: #222;
+  object-fit: cover;
+}
+
+#qrStatus {
+  text-align: center;
+  font-size: 1.08rem;
+  margin: 18px 0 0 0;
+  color: #91204D;
+  font-weight: 600;
+}
+
+
+.use-btn {
+  width: 90%;
+  margin: 24px auto 24px auto;
+  display: block;
+  background: #af0161;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 25px;
+  padding: 14px 0;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.use-btn:enabled {
+  opacity: 1;
+}
+
+.use-btn:disabled {
+  background: #f5d9e2;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+
 .menu-btn {
   flex: 1;
   background-color: #af0161;

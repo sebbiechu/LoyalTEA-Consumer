@@ -51,7 +51,7 @@
   <!-- QR Modal (hidden by default) -->
   <div id="scanModal" class="qr-modal hidden">
     <div class="qr-modal-content">
-      <video id="qr-reader" style="width: 260px; margin: 0 auto; border-radius: 16px;" muted playsinline></video>
+      <video id="qr-reader" muted playsinline></video>
       <div id="scanStatus" style="margin-top: 18px; color: #91204D; font-weight: 600;"></div>
       <button id="closeScanBtn" class="use-btn">Cancel</button>
     </div>
@@ -81,6 +81,9 @@
   <script type="module" src="scripts/rewards.js"></script>
 
   <div id="toast" class="custom-toast" style="display:none;"></div>
+  
+  <audio id="stampSound" src="sounds/stamp.mp3" preload="auto"></audio>
+  <audio id="rewardSound" src="sounds/reward.mp3" preload="auto"></audio>
 
 </body>
 </html>

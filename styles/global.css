@@ -27,6 +27,8 @@ body, html {
   box-shadow: 0 4px 24px rgba(145,32,77,0.22);
   opacity: 0.97;
   transition: opacity 0.3s;
+  width: 50%;
+  text-align: center;
 }
 
 
