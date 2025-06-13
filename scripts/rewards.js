@@ -282,6 +282,18 @@ async function fetchUserData() {
   });
 }
 
+function showToast(message, timeout = 1600) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.style.display = "block";
+  toast.style.opacity = "0.97";
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => { toast.style.display = "none"; }, 350);
+  }, timeout);
+}
+
 
 
 // --- Init on page load ---

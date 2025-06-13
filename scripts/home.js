@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       data = JSON.parse(qrData);
     } catch {
-      alert("Invalid QR code format.");
+      showToast("Invalid QR code format.");
       return;
     }
 
@@ -152,13 +152,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // Get user doc
         const user = auth.currentUser;
         if (!user) {
-          alert("You are not signed in.");
+          showToast("You are not signed in.");
           return;
         }
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
         if (!userSnap.exists()) {
-          alert("User record not found.");
+          showToast("User record not found.");
           return;
         }
         const userData = userSnap.data();
@@ -168,24 +168,37 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentStamps < 9) {
           const newStamps = currentStamps + 1;
           await updateDoc(userRef, { stamps: newStamps, lastStampedAt: new Date().toUTCString() });
-          alert("Stamp earned! You now have " + newStamps + " stamp" + (newStamps > 1 ? "s." : "."));
+          showToast("Stamp earned! You now have " + newStamps + " stamp" + (newStamps > 1 ? "s." : "."));
           // Optionally: update displayed stamps instantly
           if (currentStampsDisp) currentStampsDisp.textContent = newStamps;
           if (stampGrid) drawStamps(newStamps);
         } else {
           // If user already has a reward ready, tell them to redeem
-          alert("You have a reward ready! Please redeem it before collecting more stamps.");
+          showToast("You have a reward ready! Please redeem it before collecting more stamps.");
           // Optionally: redirect to rewards page
           // window.location.href = "rewards.html";
         }
       } catch (err) {
-        alert("Error awarding stamp: " + err.message);
+        showToast("Error awarding stamp: " + err.message);
         console.error(err);
       }
     } else {
-      alert("Invalid staff QR code. Please try again.");
+      showToast("Invalid staff QR code. Please try again.");
     }
   }
+
+  function showToast(message, timeout = 1600) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.style.display = "block";
+  toast.style.opacity = "0.97";
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => { toast.style.display = "none"; }, 350);
+  }, timeout);
+}
+
 
   // Optional: Close modal if user clicks outside modal-content
   qrModal.addEventListener('click', (e) => {

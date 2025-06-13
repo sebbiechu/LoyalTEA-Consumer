@@ -12,6 +12,23 @@ body, html {
   display: none;
 }
 
+.custom-toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #91204D;
+  color: #fff;
+  padding: 18px 30px;
+  border-radius: 18px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  z-index: 9999;
+  box-shadow: 0 4px 24px rgba(145,32,77,0.22);
+  opacity: 0.97;
+  transition: opacity 0.3s;
+}
+
 
 .bottom-nav {
   display: flex;
