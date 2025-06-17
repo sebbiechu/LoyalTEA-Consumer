@@ -37,9 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // 👉 Button navigation
-  menuBtn?.addEventListener("click", () => {
-    window.location.href = "https://thehub.mangoapps.com/mjanus/media/43b53b?return_original_image=true&filename=Week%20Commencing%2016th%20June.png&mediaType=image";
-  });
+menuBtn?.addEventListener("click", () => {
+  window.open("images/canteen_menu_june_16th.png", "_blank");
+});
+
 
   menuBtn?.addEventListener("click", () => {
     //window.location.href = "menu.html";
