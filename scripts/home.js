@@ -36,6 +36,11 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "redeem-history.html";
   });
 
+  // 👉 Button navigation
+  menuBtn?.addEventListener("click", () => {
+    window.location.href = "https://thehub.mangoapps.com/mjanus/media/43b53b?return_original_image=true&filename=Week%20Commencing%2016th%20June.png&mediaType=image";
+  });
+
   menuBtn?.addEventListener("click", () => {
     //window.location.href = "menu.html";
   });
