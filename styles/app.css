@@ -85,15 +85,6 @@
   display: none !important;
 }
 
-.register-form {
-  max-width: 380px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-  gap: 12px;
-  box-sizing: border-box;
-}
 
 .toggle-wrapper {
   display: flex;
