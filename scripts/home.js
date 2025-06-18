@@ -1,8 +1,15 @@
 // scripts/home.js
+
 import QrScanner from "https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.min.js";
 import { auth } from "./firebase-init.js";
-import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { db } from "./firebase-init.js";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const userNameDisplay   = document.getElementById("userName");
@@ -47,40 +54,42 @@ menuBtn?.addEventListener("click", () => {
   });
 
   // 🔄 Re-fetch user data from Firestore
-  auth.onAuthStateChanged(async user => {
-    if (!user) {
-      console.warn("No user signed in. Redirecting…");
-      return window.location.href = "index.html";
-    }
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    console.warn("No user signed in. Redirecting…");
+    return window.location.href = "index.html";
+  }
 
-    try {
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()) {
-        throw new Error("User doc missing");
-      }
+  const userRef = doc(db, "users", user.uid);
 
-      const data = userSnap.data();
-      const firstName = data.firstName || "friend";
-      const stamps = data.stamps || 0;
-
-      if (userNameDisplay) {
-        userNameDisplay.textContent = firstName;
-        localStorage.setItem("firstName", firstName);
-      }
-
-      if (currentStampsDisp) {
-        currentStampsDisp.textContent = stamps;
-        localStorage.setItem("stamps", stamps);
-      }
-
-      drawStamps(stamps);
-    } catch (err) {
-      console.error("Error getting user data:", err);
+  // 🔁 Real-time sync stamp count
+  onSnapshot(userRef, (docSnap) => {
+    if (!docSnap.exists()) {
+      console.warn("User doc missing");
       if (userNameDisplay) userNameDisplay.textContent = "friend";
       if (currentStampsDisp) currentStampsDisp.textContent = "0";
+      drawStamps(0);
+      return;
     }
+
+    const data = docSnap.data();
+    const firstName = data.firstName || "friend";
+    const stamps = data.stamps || 0;
+
+    if (userNameDisplay) {
+      userNameDisplay.textContent = firstName;
+      localStorage.setItem("firstName", firstName);
+    }
+
+    if (currentStampsDisp) {
+      currentStampsDisp.textContent = stamps;
+      localStorage.setItem("stamps", stamps);
+    }
+
+    drawStamps(stamps);
   });
+});
+
 
   // ✅ Draw stamps based on count (filled stars + final cup)
   function drawStamps(count) {
