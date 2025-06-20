@@ -1,120 +1,79 @@
-// redeem-history.js
-import { auth, db } from "./firebase-init.js";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+import { supabase } from "./supabase-init.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+const drinkDescriptions = {
+  "Cafe Tea": "Your daily favourite tea.",
+  "Cafe Speciality Tea": "Gently wrapped favourable tea.",
+  "Double Expresso": "Arabic dark roast 100%.",
+  "Flat White": "Espresso, cream, milk, foam.",
+  "Americano": "Espresso, hot water.",
+  "Cafe Latte": "Original blend latte.",
+  "Cappuccino": "Espresso, steamed milk, foam.",
+  "Cafe Mocha": "Espresso, chocolate, steamed milk, foam.",
+  "Hot Chocolate": "Milk chocolate, steamed milk.",
+  "Chai Latte": "Black tea infused with spices, milk, foam."
+};
+
+const drinkImages = {
+  "Cafe Tea": "tea.jpg",
+  "Cafe Speciality Tea": "specialtea.jpg",
+  "Double Expresso": "espresso.jpg",
+  "Flat White": "flatwhite.jpg",
+  "Americano": "americano.jpg",
+  "Cafe Latte": "latte.jpg",
+  "Cappuccino": "cappuccino.jpg",
+  "Cafe Mocha": "mocha.jpg",
+  "Hot Chocolate": "hotchocolate.jpg",
+  "Chai Latte": "chailatte.jpg"
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
   const logContainer = document.getElementById("redeemLogs");
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      window.location.href = "login.html";
-      return;
-    }
+  const { data: session } = await supabase.auth.getUser();
+  const userId = session?.user?.id;
 
-    try {
-      // ── 1) Clear any old logs and fetch the “redeems” for this user ──
-      logContainer.innerHTML = "";
-      const redeemQuery = query(
-        collection(db, "redeems"),
-        where("uid", "==", user.uid),
-        orderBy("date", "desc")
-      );
-      const redeemSnap = await getDocs(redeemQuery);
+  if (!userId) {
+    logContainer.innerHTML = "<p>Please log in to view your history.</p>";
+    return;
+  }
 
-      if (redeemSnap.empty) {
-        const noHistory = document.createElement("div");
-        noHistory.classList.add("redeem-log");
-        noHistory.textContent = "No redemption history yet.";
-        logContainer.appendChild(noHistory);
-        return;
-      }
+  const { data: logs, error } = await supabase
+    .from("redeems")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
 
-      // ── 2) Loop through each document and render a log entry ──
-      redeemSnap.forEach(docSnapshot => {
-        const log = docSnapshot.data();
+  if (error || !logs || logs.length === 0) {
+    logContainer.innerHTML = "<p>No redeem history found.</p>";
+    return;
+  }
 
-        // Format Firestore timestamp into “DD MMMM YYYY”
-        let formattedDate = "";
-if (log.date) {
-  // If log.date is a Firestore Timestamp object:
-  if (typeof log.date.toDate === "function") {
-    const d = log.date.toDate();
-    formattedDate = d.toLocaleString("en-GB", {
+  logContainer.innerHTML = logs.map(log => {
+    const d = new Date(log.created_at);
+    const formatted = d.toLocaleString("en-GB", {
       day: "2-digit",
-      month: "long",
+      month: "short",
       year: "numeric",
       hour: "2-digit",
       minute: "2-digit"
     });
-  }
-  // If log.date is a string (fallback):
-  else if (typeof log.date === "string") {
-    const d = new Date(log.date);
-    formattedDate = d.toLocaleString("en-GB", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-  }
-}
 
-        
+    const name = log.type;
+    const desc = drinkDescriptions[name] || "Reward redeemed.";
+    const img = drinkImages[name] ? `images/drinks/${drinkImages[name]}` : "images/default.jpg";
 
-        const logBlock = document.createElement("div");
-        logBlock.classList.add("redeem-log");
-
-        if (formattedDate) {
-          const dateEl = document.createElement("div");
-          dateEl.classList.add("redeem-date");
-          dateEl.textContent = formattedDate;
-          logBlock.appendChild(dateEl);
-        }
-
-        const msg = document.createElement("div");
-        msg.classList.add("redeem-entry");
-
-        // Apply different CSS classes so ::before picks the right icon
-        if (log.type === "Coffee") {
-          msg.classList.add("coffee");
-        } else {
-          msg.classList.add("tea");
-        }
-
-        const count = log.count || 0;
-        const total = log.total || (log.type === "Tea" ? 2 : 1);
-        const singularType = log.type;            // "Coffee" or "Tea"
-        const pluralType   = singularType + "s";  // "Coffees" or "Teas"
-        const displayType  = count === 1 ? singularType : pluralType;
-
-        // ── Conditionally omit “/ 1 Coffees” when type is Coffee ──
-        if (log.type === "Coffee") {
-          msg.textContent = `You have redeemed: ${count} ${displayType}`;
-        } else {
-          // For Tea, show “1 Tea / 2 Teas” or “2 Teas / 2 Teas”
-          msg.textContent = `You have redeemed: ${count} ${displayType} / ${total} ${pluralType}`;
-        }
-
-        logBlock.appendChild(msg);
-        logContainer.appendChild(logBlock);
-      });
-    }
-    catch (err) {
-      console.error("Failed to load redeem history:", err);
-      const errEl = document.createElement("div");
-      errEl.classList.add("redeem-log");
-      errEl.textContent = "Error loading redemption history.";
-      logContainer.appendChild(errEl);
-    }
-  });
+    return `
+      <div class="redeem-log-entry">
+        <div class="log-date">${formatted}</div>
+        <div class="log-card">
+          <img src="${img}" alt="${name}" class="drink-img">
+          <div class="log-info">
+            <div class="log-title">${name}</div>
+            <div class="log-desc">${desc}</div>
+          </div>
+          <div class="log-status">Free</div>
+        </div>
+      </div>
+    `;
+  }).join("");
 });

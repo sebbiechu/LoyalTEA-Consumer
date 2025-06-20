@@ -1,77 +1,93 @@
 body {
   margin: 0;
-  background-color: #f4dfd9;
+  background: #f7f7f7;
   font-family: 'Poppins', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Tab Bar */
-.log-tabs {
-  display: flex;
-  justify-content: center;
-  background-color: #79142a;
-}
-
-.tab {
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
-  font-size: 1rem;
+.header {
+  background-color: #91204D;
   color: #fff;
-  border-bottom: 3px solid transparent;
-  cursor: default;
-}
-
-/* Redeem Logs */
-.redeem-log-section {
-  background-color: #fff;
-  margin: 0;
-  width: 100vw;
-  box-sizing: border-box;
-  border-radius: 0;
-}
-
-/* Redeem Logs wrapper */
-.redeem-log-wrapper {
-  background-color: #fff;
-  width: 100vw;
-  box-sizing: border-box;
-}
-
-.redeem-log {
-  margin-bottom: 2rem;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 1rem;
-  padding-left: 1rem;
-  margin-top: 1rem;
-}
-
-.redeem-date {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #2c2c2c;
-  margin-bottom: 0.5rem;
-}
-
-.redeem-entry {
+  padding: 20px;
   display: flex;
   align-items: center;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+}
+
+.back-button {
+  color: #fff;
+  text-decoration: none;
   font-size: 1rem;
-  color: #333;
+  font-weight: 500;
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
 }
 
-.redeem-entry::before {
-  content: url('../images/bean.svg');
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  margin-right: 0.5rem;
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* Optional: Show different icons for tea/coffee */
-.redeem-entry.coffee::before {
-  content: url('../images/coffee_bean.svg');
+.header-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 auto;
 }
-.redeem-entry.tea::before {
-  content: url('../images/tea_bag.svg');
+
+.redeem-history-container {
+  background: #fff;
+  margin: 0 12px;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.log-date {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.log-card {
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  gap: 12px;
+}
+
+.drink-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.log-info {
+  flex: 1;
+}
+
+.log-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #91204D;
+}
+
+.log-desc {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.log-status {
+  font-weight: 600;
+  color: #91204D;
+  font-size: 0.95rem;
 }

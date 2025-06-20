@@ -1,11 +1,5 @@
-// app.js (shared logic across pages)
-
-import { auth } from "./firebase-init.js";
-import {
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+// scripts/app.js
+import { supabase } from './supabase-init.js';
 
 /**
  * Auto-format email by appending @loyaltea.app
@@ -34,33 +28,40 @@ export function validatePassword(password) {
  * Centralized login handler
  */
 export async function handleLogin(email, password) {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
-  } catch (error) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
     throw new Error(error.message);
   }
+
+  return data.user;
 }
 
 /**
  * Centralized register handler
  */
 export async function handleRegister(email, password) {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
-  } catch (error) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password
+  });
+
+  if (error) {
     throw new Error(error.message);
   }
+
+  return data.user;
 }
 
 /**
  * Redirect if already logged in
  */
-export function redirectIfLoggedIn() {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      window.location.href = "home.html";
-    }
-  });
+export async function redirectIfLoggedIn() {
+  const { data } = await supabase.auth.getUser();
+  if (data?.user) {
+    window.location.href = "home.html";
+  }
 }

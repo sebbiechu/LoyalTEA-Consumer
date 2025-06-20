@@ -1,232 +1,192 @@
-// scripts/home.js
-
+import { supabase } from './supabase-init.js';
 import QrScanner from "https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.min.js";
-import { auth } from "./firebase-init.js";
-import { db } from "./firebase-init.js";
-import {
-  doc,
-  getDoc,
-  updateDoc,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
+document.addEventListener("DOMContentLoaded", async () => {
+  const userIdSpan = document.getElementById("userId");
+  const userName = document.getElementById("userName");
+  const stampGrid = document.getElementById("stampGrid");
+  const stampSound = document.getElementById("stampSound");
+  const rewardSound = document.getElementById("rewardSound");
+  const qrModal = document.getElementById("qrScannerModal");
+  const qrReaderElem = document.getElementById("qr-reader");
+  const closeQRBtn = document.getElementById("closeQrModal");
+  const scanStatus = document.getElementById("qrStatus");
+  const openQRBtn = document.getElementById("openQRBtn");
+  const rewardsBadge = document.getElementById("rewardsBadge");
 
-document.addEventListener("DOMContentLoaded", () => {
-  const userNameDisplay   = document.getElementById("userName");
-  const currentStampsDisp = document.getElementById("currentStamps");
-  const stampGrid         = document.getElementById("stampGrid");
-  const scanBtn           = document.getElementById("scanStampBtn");
-  const historyBtn        = document.getElementById("historyBtn");
-  const menuBtn           = document.getElementById("menuBtn");
-  // --- Modal Elements for Scanner ---
-  const qrModal           = document.getElementById("qrScannerModal");
-  const closeQrModal      = document.getElementById("closeQrModal");
-  const qrStatus          = document.getElementById("qrStatus");
-  const qrReaderElem      = document.getElementById("qr-reader");
-  let qrScanner           = null;
-  let scanActive          = false;
+  let userId = null;
+  let stampCount = 0;
+  let qrScanner = null;
+  const SALT = "LOYALTEA_SECRET_SALT";
 
-  // 🔁 Show cached name & stamps instantly
-  const cachedName = localStorage.getItem("firstName");
-  if (cachedName && userNameDisplay) {
-    userNameDisplay.textContent = cachedName;
+  async function generateTodayHash() {
+    const today = new Date().toISOString().slice(0, 10);
+    const encoder = new TextEncoder();
+    const hashBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(SALT + today));
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
   }
 
-  const cachedStamps = localStorage.getItem("stamps");
-  if (cachedStamps && currentStampsDisp) {
-    currentStampsDisp.textContent = cachedStamps;
-    drawStamps(parseInt(cachedStamps, 10));
+  async function fetchUser() {
+    const { data: session } = await supabase.auth.getUser();
+    if (!session?.user) return window.location.href = "index.html";
+    userId = session.user.id;
+    if (userIdSpan) userIdSpan.textContent = userId;
   }
 
-  // 👉 Button navigation
-  historyBtn?.addEventListener("click", () => {
-    window.location.href = "redeem-history.html";
-  });
+  async function fetchUserData() {
+    const { data: profileData, error: profileError } = await supabase
+      .from("profiles")
+      .select("first_name, stamp_count")
+      .eq("id", userId)
+      .single();
 
-  // 👉 Button navigation
-menuBtn?.addEventListener("click", () => {
-  window.open("images/canteen_menu_june_16th.png", "_blank");
-});
-
-
-  menuBtn?.addEventListener("click", () => {
-    //window.location.href = "menu.html";
-  });
-
-  // 🔄 Re-fetch user data from Firestore
-auth.onAuthStateChanged(user => {
-  if (!user) {
-    console.warn("No user signed in. Redirecting…");
-    return window.location.href = "index.html";
-  }
-
-  const userRef = doc(db, "users", user.uid);
-
-  // 🔁 Real-time sync stamp count
-  onSnapshot(userRef, (docSnap) => {
-    if (!docSnap.exists()) {
-      console.warn("User doc missing");
-      if (userNameDisplay) userNameDisplay.textContent = "friend";
-      if (currentStampsDisp) currentStampsDisp.textContent = "0";
-      drawStamps(0);
+    if (profileError) {
+      console.error("Error fetching profile:", profileError);
       return;
     }
 
-    const data = docSnap.data();
-    const firstName = data.firstName || "friend";
-    const stamps = data.stamps || 0;
+    const firstName = profileData.first_name;
+    stampCount = profileData.stamp_count || 0;
 
-    if (userNameDisplay) {
-      userNameDisplay.textContent = firstName;
-      localStorage.setItem("firstName", firstName);
-    }
+    // Save to localStorage
+    localStorage.setItem("firstName", firstName);
 
-    if (currentStampsDisp) {
-      currentStampsDisp.textContent = stamps;
-      localStorage.setItem("stamps", stamps);
-    }
+    const stampCountDisplay = document.getElementById("stampCountDisplay");
+    if (stampCountDisplay) stampCountDisplay.textContent = stampCount;
 
-    drawStamps(stamps);
-  });
-});
-
-
-  // ✅ Draw stamps based on count (filled stars + final cup)
-  function drawStamps(count) {
-    if (!stampGrid) return;
-    stampGrid.innerHTML = "";
-    for (let i = 1; i <= 9; i++) {
-      const cell = document.createElement("div");
-      cell.className = "stamp" + (i <= count ? " filled" : "");
-      stampGrid.appendChild(cell);
-    }
-    const cup = document.createElement("div");
-    cup.className = "stampcup";
-    stampGrid.appendChild(cup);
+    if (userName) userName.textContent = `${firstName}`;
+    updateStampGrid();
+    updateRewardsBadge();
   }
 
-  // ---- QR Scanner (qr-scanner library, animated orange corners) ----
-  scanBtn.addEventListener('click', () => {
-    scanActive = true;
+  // Show cached first name instantly if available
+  const cachedFirstName = localStorage.getItem("firstName");
+  if (cachedFirstName && userName) {
+    userName.textContent = cachedFirstName;
+  }
+
+  function updateStampGrid() {
+    if (!stampGrid) return;
+    stampGrid.innerHTML = "";
+    for (let i = 0; i < 9; i++) {
+      const stamp = document.createElement("div");
+      stamp.className = "stamp-slot";
+      const img = document.createElement("img");
+      img.src = i < stampCount ? "images/star_filled.png" : "images/star_empty.png";
+      img.alt = "stamp";
+      img.style.width = "36px";
+      img.style.height = "36px";
+      stamp.appendChild(img);
+      stampGrid.appendChild(stamp);
+    }
+  }
+
+  function updateRewardsBadge() {
+    if (rewardsBadge) {
+      rewardsBadge.style.display = stampCount >= 9 ? "flex" : "none";
+      rewardsBadge.textContent = stampCount >= 9 ? "1" : "";
+    }
+  }
+
+async function addStamp() {
+  if (stampCount >= 9) {
+    alert("You already have 9 stamps. Please redeem your free drink before collecting more.");
+    window.location.href = "rewards.html";
+    return;
+  }
+
+  const newCount = stampCount + 1;
+
+  // ✅ First update the profile
+  const { error } = await supabase
+    .from("profiles")
+    .update({ stamp_count: newCount })
+    .eq("id", userId);
+
+  if (error) {
+    console.error("Error updating stamp count:", error);
+    if (scanStatus) scanStatus.textContent = "Failed to add stamp.";
+    return;
+  }
+
+  // ✅ THEN log the scan
+  await supabase.from("stamps").insert({
+    user_id: userId,
+    method: "QR"
+  });
+
+  stampCount = newCount;
+
+  const stampCountDisplay = document.getElementById("stampCountDisplay");
+  if (stampCountDisplay) stampCountDisplay.textContent = stampCount;
+
+  updateStampGrid();
+  updateRewardsBadge();
+  stampSound?.play();
+  if (scanStatus) scanStatus.textContent = "Stamp added!";
+}
+
+
+
+
+  async function startQRScan() {
+    if (!qrModal || !scanStatus || !qrReaderElem) return;
+
+    console.log("QR Scan triggered");
     qrModal.classList.remove("hidden");
-    qrStatus.textContent = "Scan the staff QR code at the till…";
-    startQrScanner();
-  });
+    scanStatus.textContent = "Scanning...";
 
-  closeQrModal.addEventListener('click', () => {
-    scanActive = false;
-    stopQrScanner();
-    qrModal.classList.add("hidden");
-    qrStatus.textContent = '';
-  });
+    const todayHash = await generateTodayHash();
 
-  function startQrScanner() {
     if (qrScanner) {
       qrScanner.destroy();
       qrScanner = null;
     }
-    qrReaderElem.srcObject = null;
 
+    qrReaderElem.srcObject = null;
     qrScanner = new QrScanner(
       qrReaderElem,
       async result => {
-        if (!scanActive) return;
-        scanActive = false;
         qrScanner.stop();
 
         let data;
         try {
           data = JSON.parse(result.data);
         } catch {
-          showToast("Invalid QR code format.");
-          setTimeout(() => {
-            qrModal.classList.add("hidden");
-          }, 900);
+          scanStatus.textContent = "Invalid QR code.";
           return;
         }
 
-        if (data.type === "staff" && data.code === "LOYALTEA") {
-          // Award a stamp!
-          try {
-            const user = auth.currentUser;
-            if (!user) {
-              showToast("You are not signed in.");
-              return;
-            }
-            const userRef = doc(db, "users", user.uid);
-            const userSnap = await getDoc(userRef);
-            if (!userSnap.exists()) {
-              showToast("User record not found.");
-              return;
-            }
-            const userData = userSnap.data();
-            const currentStamps = Number(userData.stamps) || 0;
-
-            if (currentStamps < 9) {
-              const newStamps = currentStamps + 1;
-              await updateDoc(userRef, { stamps: newStamps, lastStampedAt: new Date().toUTCString() });
-
-              //Play stamp sound!
-              document.getElementById('stampSound')?.play();
-
-              showToast("Stamp earned! You now have " + newStamps + " stamp" + (newStamps > 1 ? "s." : "."));
-              // Optionally: update displayed stamps instantly
-              if (currentStampsDisp) currentStampsDisp.textContent = newStamps;
-              if (stampGrid) drawStamps(newStamps);
-            } else {
-              showToast("You have a reward ready! Please redeem it before collecting more stamps.");
-              // Optionally: redirect to rewards page
-              // window.location.href = "rewards.html";
-            }
-          } catch (err) {
-            showToast("Error awarding stamp: " + err.message);
-            console.error(err);
-          }
+        if (data.type === "staff" && data.code === todayHash) {
+          await addStamp();
+          closeQRModal();
         } else {
-          showToast("Invalid staff QR code. Please try again.");
+          scanStatus.textContent = "Invalid staff QR code.";
         }
-
-        setTimeout(() => {
-          qrModal.classList.add("hidden");
-        }, 1000);
       },
       {
+        preferredCamera: 'environment',
         highlightScanRegion: true,
-        highlightCodeOutline: true,
-        preferredCamera: 'environment'
+        highlightCodeOutline: true
       }
     );
     qrScanner.start();
   }
 
-  function stopQrScanner() {
+  function closeQRModal() {
     if (qrScanner) {
       qrScanner.stop();
       qrScanner.destroy();
       qrScanner = null;
     }
-    qrReaderElem.srcObject = null;
+    if (qrModal) qrModal.classList.add("hidden");
+    if (scanStatus) scanStatus.textContent = "";
   }
 
-  // Toast notification for status
-  function showToast(message, timeout = 2600) {
-    const toast = document.getElementById("toast");
-    if (!toast) return;
-    toast.textContent = message;
-    toast.style.display = "block";
-    toast.style.opacity = "0.97";
-    setTimeout(() => {
-      toast.style.opacity = "0";
-      setTimeout(() => { toast.style.display = "none"; }, 350);
-    }, timeout);
-  }
+  openQRBtn?.addEventListener("click", startQRScan);
+  closeQRBtn?.addEventListener("click", closeQRModal);
 
-  // Optional: Close modal if user clicks outside modal-content
-  qrModal.addEventListener('click', (e) => {
-    if (e.target === qrModal) {
-      stopQrScanner();
-      qrModal.classList.add("hidden");
-      qrStatus.textContent = '';
-    }
-  });
+  await fetchUser();
+  await fetchUserData();
 });

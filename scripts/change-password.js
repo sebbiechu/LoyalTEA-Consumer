@@ -1,12 +1,7 @@
-import { auth } from "./firebase-init.js";
-import {
-  updatePassword,
-  reauthenticateWithCredential,
-  EmailAuthProvider,
-} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+// scripts/change-password.js
+import { supabase } from "./supabase-init.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const oldPasswordInput = document.getElementById("oldPassword");
   const newPasswordInput = document.getElementById("newPassword");
   const confirmBtn = document.getElementById("confirmChangeBtn");
   const errorText = document.getElementById("changeError");
@@ -26,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const badgeMap = {
     upper: /[A-Z]/,
     lower: /[a-z]/,
-    number: /\\d/,
-    special: /[!@#$%^&*(),.?\":{}|<>]/,
-    length: /.{8,}/,
+    number: /\d/,
+    special: /[!@#$%^&*(),.?":{}|<>]/,
+    length: /.{8,}/
   };
 
   newPasswordInput.addEventListener("input", () => {
@@ -50,29 +45,28 @@ document.addEventListener("DOMContentLoaded", () => {
     confirmBtn.classList.toggle("active", allValid);
   });
 
-  // 🔐 Confirm Change
+  // 🚧 Submit Placeholder
   document.getElementById("changePasswordForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     errorText.textContent = "";
 
-    const oldPassword = oldPasswordInput.value.trim();
-    const newPassword = newPasswordInput.value.trim();
+    const { data } = await supabase.auth.getUser();
+    const user = data?.user;
 
-    const user = auth.currentUser;
-    if (!user || !user.email) {
+    if (!user) {
       errorText.textContent = "No user session found.";
       return;
     }
 
-    try {
-      const credential = EmailAuthProvider.credential(user.email, oldPassword);
-      await reauthenticateWithCredential(user, credential);
-      await updatePassword(user, newPassword);
-      alert("Password changed successfully.");
-      window.location.href = "settings.html";
-    } catch (err) {
-      console.error(err);
-      errorText.textContent = err.message || "Password change failed.";
+    // ❌ Supabase client cannot update password directly
+    alert("⚠️ Password changes must be done via email reset link.\n\nYou'll be redirected to request one now.");
+
+    const { error } = await supabase.auth.resetPasswordForEmail(user.email);
+    if (error) {
+      errorText.textContent = error.message;
+    } else {
+      alert("🔐 A reset email has been sent to your inbox.");
+      window.location.href = "index.html";
     }
   });
 });

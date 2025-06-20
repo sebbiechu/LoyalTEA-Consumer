@@ -1,58 +1,80 @@
-import { auth, db } from "./firebase-init.js";
-import {
-  updatePassword,
-  reauthenticateWithCredential,
-  EmailAuthProvider,
-  deleteUser,
-  signOut,
-} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-import { doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { supabase } from './supabase-init.js';
 
-document.addEventListener("DOMContentLoaded", () => {
-  const changePasswordBtn = document.getElementById("changePasswordBtn");
+document.addEventListener("DOMContentLoaded", async () => {
+  const changePasswordBtn = document.getElementById("resetPasswordBtn");
   const redeemHistoryBtn  = document.getElementById("redeemHistoryBtn");
   const deleteAccountBtn  = document.getElementById("deleteAccountBtn");
   const logoutBtn         = document.getElementById("logoutBtn");
 
-  // 🔐 Change Password
-  changePasswordBtn.addEventListener("click", () => {
-    window.location.href = "change-password.html";
-  });
+  // ⚡ Show cached name instantly if available
+  const cachedName = localStorage.getItem("firstName");
+  const nameSpan = document.getElementById("userFirstName");
+  if (cachedName && nameSpan) nameSpan.textContent = cachedName;
 
-  // ☕ Redeem History (navigate instead of alert)
-  redeemHistoryBtn.addEventListener("click", () => {
-    window.location.href = "redeem-history.html";
-  });
+  // 🧠 Fetch fresh name from Supabase
+  const { data: session } = await supabase.auth.getUser();
+  const userId = session?.user?.id;
 
-  // 🗑️ Delete Account
-  deleteAccountBtn.addEventListener("click", async () => {
-    const confirmed = confirm("Are you sure you want to delete your account? This cannot be undone.");
-    if (!confirmed) return;
+  if (userId) {
+    const { data: profile, error } = await supabase
+      .from("profiles")
+      .select("first_name")
+      .eq("id", userId)
+      .single();
 
-    const user = auth.currentUser;
-    if (!user) return;
+    if (!error && profile?.first_name) {
+      const firstName = profile.first_name;
+      if (nameSpan) nameSpan.textContent = firstName;
+      localStorage.setItem("firstName", firstName);
+    }
+  }
 
-    try {
-      // Delete Firestore user doc
-      await deleteDoc(doc(db, "users", user.uid));
+  // 🔁 Reset Password
+  changePasswordBtn?.addEventListener("click", async () => {
+    const confirmReset = confirm("Are you sure you want to reset your password?");
+    if (!confirmReset) return;
 
-      // Delete Auth account
-      await deleteUser(user);
+    const { data: session } = await supabase.auth.getUser();
+    const email = session?.user?.email;
 
-      alert("Your account has been deleted.");
-      window.location.href = "index.html";
-    } catch (err) {
-      alert("Error deleting account: " + err.message);
+    if (!email) {
+      alert("Error: No email associated with this account.");
+      return;
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "https://loyaltea.app/update-password.html"
+    });
+
+    if (error) {
+      console.error("Password reset error:", error);
+      alert("Something went wrong. Please try again.");
+    } else {
+      alert("A password reset link has been sent to your email.");
     }
   });
 
-  // 🔓 Log Out
-  logoutBtn.addEventListener("click", async () => {
-    try {
-      await signOut(auth);
+  // 📜 View redeem history
+  redeemHistoryBtn?.addEventListener("click", () => {
+    window.location.href = "redeem-history.html";
+  });
+
+  // 🗑️ Delete account
+  deleteAccountBtn?.addEventListener("click", async () => {
+    const confirmed = confirm("Are you sure you want to delete your account? This cannot be undone.");
+    if (!confirmed) return;
+
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
       window.location.href = "index.html";
-    } catch (err) {
-      alert("Logout failed: " + err.message);
+    }
+  });
+
+  // 🚪 Log out
+  logoutBtn?.addEventListener("click", async () => {
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      window.location.href = "index.html";
     }
   });
 });

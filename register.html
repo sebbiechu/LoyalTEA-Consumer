@@ -13,55 +13,50 @@
 </head>
 <body>
   <div class="auth-container">
+    <div class="form-wrapper">
 
-  <div class="form-wrapper">
+      <div class="register-header-block">
+        <img src="images/logo.png" alt="LoyalTEA Logo" class="welcome-logo" />
+      </div>
 
-    <div class="register-header-block">
-      <img src="images/logo.png" alt="LoyalTEA Logo" class="welcome-logo" />
+      <form id="registerForm" class="register-form">
+        <div class="form-group">
+          <input type="text" id="firstName" placeholder="First name" required />
+        </div>
+
+        <div class="form-group">
+          <input type="email" id="email" placeholder="Email address" required />
+        </div>
+
+        <div class="form-group password-wrapper">
+          <input type="password" id="regPassword" placeholder="Password" required />
+        </div>
+
+        <div class="badge-wrap">
+          <span class="badge" data-rule="upper">Uppercase</span>
+          <span class="badge" data-rule="lower">Lowercase</span>
+          <span class="badge" data-rule="number">Number</span>
+          <span class="badge" data-rule="special">Symbol</span>
+          <span class="badge" data-rule="length">8+ Characters</span>
+        </div>
+
+        <!-- Styled Toggle Switch -->
+        <label class="toggle-wrapper">
+          <input type="checkbox" id="termsCheckbox" required />
+          <span class="toggle-switch"></span>
+          <span class="toggle-label">
+            I have read and agree to <a href="terms.html">Terms of Service & Privacy Policy</a>
+          </span>
+        </label>
+
+        <div class="form-footer">
+          <button id="registerSubmit" type="submit" class="submit-btn" disabled>Register</button>
+          <p class="auth-error" id="registerError"></p>
+          <p class="member-text">Already a member? <a href="index.html">Login</a></p>
+        </div>
+      </form>
+
     </div>
-
-    <form id="registerForm" class="register-form">
-  <div class="form-group">
-    <input type="text" id="firstName" placeholder="First name" required />
-  </div>
-
-  <div class="form-group">
-    <input type="text" id="username" placeholder="Username" required />
-  </div>
-
-<div class="form-group password-wrapper">
-  <input type="password" id="regPassword" placeholder="Password" required />
-  </button>
-</div>
-
-
-  <div class="badge-wrap">
-    <span class="badge" data-rule="upper">Uppercase</span>
-    <span class="badge" data-rule="lower">Lowercase</span>
-    <span class="badge" data-rule="number">Number</span>
-    <span class="badge" data-rule="special">Symbol</span>
-    <span class="badge" data-rule="length">8+ Characters</span>
-  </div>
-
-  <!-- Styled Toggle Switch -->
-  <label class="toggle-wrapper">
-    <input type="checkbox" id="termsCheckbox" required />
-    <span class="toggle-switch"></span>
-    <span class="toggle-label">
-      I have read and agree to <a href="terms.html">Terms of Service & Privacy Policy</a>
-    </span>
-  </label>
-
-  <div class="form-footer">
-    <button id="registerSubmit" type="submit" class="submit-btn" disabled>Register</button>
-    <p class="auth-error" id="registerError"></p>
-    <p class="member-text">Already a member? <a href="index.html">Login</a></p>
-  </div>
-
-</div>
-
-</form>
-
   </div>
 
   <script type="module" src="scripts/register.js"></script>

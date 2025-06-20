@@ -1,28 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Redeem History</title>
-    <link rel="stylesheet" href="styles/global.css" />
-    <link rel="stylesheet" href="styles/app.css" />
-    <link rel="stylesheet" href="styles/redeem.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-
-<!-- Wrap these two in a container -->
-<div class="redeem-log-wrapper">
-  <div class="log-tabs">
-    <div class="tab active">Order History</div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redeem History</title>
+  <link rel="stylesheet" href="styles/global.css">
+  <link rel="stylesheet" href="styles/redeem.css">
+</head>
+<body>
+  <div class="header">
+    <a href="settings.html" class="back-button">← Back</a>
+    <h1 class="header-title">Redeem History</h1>
   </div>
 
-  <div id="redeemLogs">
-    <!-- Log entries will appear here -->
+  <div id="redeemLogs" class="redeem-history-container">
+    <!-- Logs will be inserted here -->
   </div>
-</div>
 
-<script type="module" src="scripts/redeem-history.js"></script>
-
-  </body>
+  <script type="module" src="scripts/redeem-history.js"></script>
+</body>
 </html>

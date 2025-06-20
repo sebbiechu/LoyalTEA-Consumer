@@ -9,81 +9,174 @@
   <link rel="stylesheet" href="styles/rewards.css"/>
 </head>
 <body>
-  <!-- Header Banner -->
-  <div class="rewards-banner">
-    <h1 class="banner-title">YOUR <span>REWARDS</span></h1>
-    <p class="banner-subtitle">Treat Yourself</p>
-    <p class="rewards-recent-label">Choose rewards to use</p>
-  </div>
 
-  <!-- Rewards Section -->
-  <div class="rewards-container">
-    <form id="rewardForm" class="rewards-group">
-      <!-- Coffee Reward -->
-      <label class="reward-card" id="coffeeCard">
-        <div class="reward-card-left">
-          <img src="images/latte.jpg" class="reward-icon round" alt="Coffee" />
-        </div>
-        <div class="reward-text">
-          <p class="reward-title">FREE COFFEE</p>
-          <p class="reward-subtext" id="coffeeUses">1 use remaining</p>
-        </div>
-        <input type="radio" name="reward" value="coffee" />
-        <span class="custom-radio"></span>
-      </label>
-      <!-- Tea Reward -->
-      <label class="reward-card" id="teaCard">
-        <div class="reward-card-left">
-          <img src="images/englishtea.jpeg" class="reward-icon round" alt="Tea" />
-        </div>
-        <div class="reward-text">
-          <p class="reward-title">FREE CUP OF TEA</p>
-          <p class="reward-subtext" id="teaUses">2 uses remaining</p>
-        </div>
-        <input type="radio" name="reward" value="tea" />
-        <span class="custom-radio"></span>
-      </label>
-      <button id="useRewardBtn" type="button" disabled class="use-btn">Use at till</button>
-    </form>
-    <p id="noRewards" class="no-rewards-message" style="display:none;">Collect 9 stamps to unlock your rewards!</p>
-  </div>
+  <div id="pageWrapper">
+    <div class="rewards-banner">
+      <h1 class="banner-title">YOUR <span>REWARDS</span></h1>
+      <p class="banner-subtitle">Treat Yourself</p>
+      <p class="rewards-recent-label">Choose rewards to use</p>
+    </div>
 
-  <!-- QR Modal (hidden by default) -->
-  <div id="scanModal" class="qr-modal hidden">
-    <div class="qr-modal-content">
-      <video id="qr-reader" muted playsinline></video>
-      <div id="scanStatus" style="margin-top: 18px; color: #91204D; font-weight: 600;"></div>
-      <button id="closeScanBtn" class="use-btn">Cancel</button>
+    <div class="rewards-container">
+      <form id="rewardForm" class="rewards-group">
+
+        <label class="reward-card">
+          <div class="reward-card-left">
+            <img src="images/drinks/tea.jpg" class="reward-icon round" />
+            <div class="reward-text">
+              <p class="reward-title">Normal Tea</p>
+              <p class="reward-subtext">Classic blend</p>
+            </div>
+          </div>
+          <input type="radio" name="reward" value="Cafe Tea">
+          <span class="custom-radio"></span>
+        </label>
+
+        <label class="reward-card">
+          <div class="reward-card-left">
+            <img src="images/drinks/specialtea.jpg" class="reward-icon round" />
+            <div class="reward-text">
+              <p class="reward-title">Special Tea</p>
+              <p class="reward-subtext">Unique infusion</p>
+            </div>
+          </div>
+          <input type="radio" name="reward" value="Cafe Speciality Tea">
+          <span class="custom-radio"></span>
+        </label>
+
+        <label class="reward-card">
+          <div class="reward-card-left">
+            <img src="images/drinks/espresso.jpg" class="reward-icon round" />
+            <div class="reward-text">
+              <p class="reward-title">Double Espresso</p>
+              <p class="reward-subtext">Strong & intense</p>
+            </div>
+          </div>
+          <input type="radio" name="reward" value="Double Espresso">
+          <span class="custom-radio"></span>
+        </label>
+
+        <label class="reward-card">
+          <div class="reward-card-left">
+            <img src="images/drinks/flatwhite.jpg" class="reward-icon round" />
+            <div class="reward-text">
+              <p class="reward-title">Flat White</p>
+              <p class="reward-subtext">Smooth & bold</p>
+            </div>
+          </div>
+          <input type="radio" name="reward" value="Flat White">
+          <span class="custom-radio"></span>
+        </label>
+
+        <label class="reward-card">
+          <div class="reward-card-left">
+            <img src="images/drinks/americano.jpg" class="reward-icon round" />
+            <div class="reward-text">
+              <p class="reward-title">Americano</p>
+              <p class="reward-subtext">Rich and clean</p>
+            </div>
+          </div>
+          <input type="radio" name="reward" value="Americano">
+          <span class="custom-radio"></span>
+        </label>
+
+        <label class="reward-card">
+          <div class="reward-card-left">
+            <img src="images/drinks/latte.jpg" class="reward-icon round" />
+            <div class="reward-text">
+              <p class="reward-title">Latte</p>
+              <p class="reward-subtext">Creamy and smooth</p>
+            </div>
+          </div>
+          <input type="radio" name="reward" value="Cafe Latte">
+          <span class="custom-radio"></span>
+        </label>
+
+        <label class="reward-card">
+          <div class="reward-card-left">
+            <img src="images/drinks/cappuccino.jpg" class="reward-icon round" />
+            <div class="reward-text">
+              <p class="reward-title">Cappuccino</p>
+              <p class="reward-subtext">Foamy delight</p>
+            </div>
+          </div>
+          <input type="radio" name="reward" value="Cappuccino">
+          <span class="custom-radio"></span>
+        </label>
+
+        <label class="reward-card">
+          <div class="reward-card-left">
+            <img src="images/drinks/mocha.jpg" class="reward-icon round" />
+            <div class="reward-text">
+              <p class="reward-title">Mocha</p>
+              <p class="reward-subtext">Coffee & chocolate</p>
+            </div>
+          </div>
+          <input type="radio" name="reward" value="Cafe Mocha">
+          <span class="custom-radio"></span>
+        </label>
+
+        <label class="reward-card">
+          <div class="reward-card-left">
+            <img src="images/drinks/hotchocolate.jpg" class="reward-icon round" />
+            <div class="reward-text">
+              <p class="reward-title">Hot Chocolate</p>
+              <p class="reward-subtext">Sweet & comforting</p>
+            </div>
+          </div>
+          <input type="radio" name="reward" value="Hot Chocolate">
+          <span class="custom-radio"></span>
+        </label>
+
+        <label class="reward-card">
+          <div class="reward-card-left">
+            <img src="images/drinks/chailatte.jpg" class="reward-icon round" />
+            <div class="reward-text">
+              <p class="reward-title">Chai Latte</p>
+              <p class="reward-subtext">Spiced & aromatic</p>
+            </div>
+          </div>
+          <input type="radio" name="reward" value="Chai Latte">
+          <span class="custom-radio"></span>
+        </label>
+      </form>
+
+      <!-- Redeem Button -->
+      <button id="useRewardBtn" class="use-btn" type="button" disabled>Use at Till</button>
+    </div>
+
+    <!-- QR Scan Modal -->
+    <div class="qr-modal hidden" id="scanModal">
+      <div class="qr-modal-content">
+        <p class="qr-modal-header">Scan Staff QR</p>
+        <video id="qr-reader" playsinline></video>
+        <p id="scanStatus">Waiting...</p>
+        <button class="close-btn" id="closeScanBtn">Cancel</button>
+      </div>
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
-<nav class="bottom-nav">
-  <a href="home.html" class="nav-item">
-    <img src="images/home.svg" alt="Home"/>
-    <span>Home</span>
-  </a>
-  <a href="rewards.html" class="nav-item active" id="rewardsNav">
-    <img src="images/rewards.svg" alt="Rewards"/>
-    <span>Rewards</span>
-    <!-- The badge will go here -->
-    <span id="rewardsBadge" class="nav-badge" style="display: none;">1</span>
-  </a>
-  <a href="settings.html" class="nav-item">
-    <img src="images/settings.svg" alt="Settings"/>
-    <span>Settings</span>
-  </a>
-</nav>
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <a href="home.html" class="nav-item">
+      <img src="images/home.svg" alt="Home"/>
+      <span>Home</span>
+    </a>
+    <a href="rewards.html" class="nav-item active" id="rewardsNav">
+      <img src="images/rewards.svg" alt="Rewards"/>
+      <span>Rewards</span>
+      <span id="rewardsBadge" class="nav-badge" style="display: none;">1</span>
+    </a>
+    <a href="settings.html" class="nav-item">
+      <img src="images/settings.svg" alt="Settings"/>
+      <span>Settings</span>
+    </a>
+  </nav>
 
-  <!-- QRious (if you still use it elsewhere in your app) -->
-  <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
-  <!-- Rewards logic, as a module -->
+  <!-- Audio -->
+  <audio id="rewardSound" src="sounds/redeem.mp3" preload="auto"></audio>
+
+  <!-- JS -->
   <script type="module" src="scripts/rewards.js"></script>
-
-  <div id="toast" class="custom-toast" style="display:none;"></div>
-  
-  <audio id="stampSound" src="sounds/stamp.mp3" preload="auto"></audio>
-  <audio id="rewardSound" src="sounds/reward.mp3" preload="auto"></audio>
-
 </body>
 </html>

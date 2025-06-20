@@ -1,10 +1,7 @@
 // scripts/global.js
+import { supabase } from './supabase-init.js';
 
-import { auth, db } from "./firebase-init.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-
-// Checks if rewards badge exists and updates it
+// ✅ Display or hide the rewards badge
 function updateRewardsBadge(stamps) {
   const badge = document.getElementById('rewardsBadge');
   if (badge) {
@@ -17,16 +14,28 @@ function updateRewardsBadge(stamps) {
   }
 }
 
-// Fetches user data and updates the badge
-function checkAndUpdateBadge() {
-  onAuthStateChanged(auth, async user => {
-    if (!user) return;
-    const userDocRef = doc(db, "users", user.uid);
-    const snap = await getDoc(userDocRef);
-    const userData = snap.exists() ? snap.data() : {};
-    updateRewardsBadge(Number(userData?.stamps) || 0);
-  });
+// ✅ Fetch user profile and update badge
+async function checkAndUpdateBadge() {
+  const {
+    data: session,
+    error: sessionError
+  } = await supabase.auth.getUser();
+
+  if (!session?.user) return;
+
+  const userId = session.user.id;
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("stamp_count")
+    .eq("id", userId)
+    .single();
+
+  if (!profile || profileError) return;
+
+  const stamps = Number(profile.stamp_count) || 0;
+  updateRewardsBadge(stamps);
 }
 
-// Run on load
+// ✅ Run on load
 document.addEventListener("DOMContentLoaded", checkAndUpdateBadge);

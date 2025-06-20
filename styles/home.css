@@ -66,11 +66,14 @@
 }
 
 /* Empty star icon only – no box */
-.stamp {
+.stamp- {
   width: 24px;
   height: 24px;
-  background: url('../images/star-empty.png') center/contain no-repeat;
+  background-size: contain !important;
+  background-repeat: no-repeat;
+  background-position: center;
 }
+
 
 
 

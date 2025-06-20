@@ -1,36 +1,40 @@
-// login.js
-import { auth } from "./firebase-init.js";
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+// scripts/login.js
+import { supabase } from './supabase-init.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  const usernameInput = document.getElementById("username");
+  const emailInput    = document.getElementById("email");
   const passwordInput = document.getElementById("loginPassword");
   const loginButton   = document.getElementById("loginSubmit");
   const loader        = document.getElementById("loginLoader");
 
   loginButton.addEventListener("click", async (e) => {
     e.preventDefault();
-    // show spinner
+
     if (loader) loader.classList.remove("hidden");
 
-    const username = usernameInput?.value.trim();
+    const email = emailInput?.value.trim();
     const password = passwordInput?.value;
 
-    if (!username || !password) {
+    if (!email || !password) {
       if (loader) loader.classList.add("hidden");
-      alert("❌ Please enter both username and password.");
+      alert("❌ Please enter both email and password.");
       return;
     }
 
-    const email = `${username}@loyaltea.app`;
-
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // on success, redirect
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) throw new Error(error.message);
+
+      // ✅ Redirect to home page on success
       window.location.href = "home.html";
     } catch (error) {
-      if (loader) loader.classList.add("hidden");
       alert("❌ Login failed: " + error.message);
+    } finally {
+      if (loader) loader.classList.add("hidden");
     }
   });
 });

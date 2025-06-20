@@ -25,6 +25,18 @@
   border-bottom: 1px solid #ececec;
 }
 
+.settings-link {
+  padding: 1rem 0;
+  font-size: 16px;
+  border-bottom: 1px solid #eee; /* 👈 this creates the line */
+  cursor: pointer;
+}
+
+
+.settings-title {
+  color: #fff;
+}
+
 .sub-bar {
   background-color: #a52c5c;
   color: #fff;

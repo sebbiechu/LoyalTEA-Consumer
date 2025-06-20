@@ -14,15 +14,14 @@
       <!-- Header Section -->
       <div class="home-header">
         <div class="welcome-text">
-          <span>Hi</span>
-          <span id="userName" class="user-name"></span>
+          <span>Hi,<span id="userName" class="user-name"></span></span>
         </div>
         <p class="home-subtitle">Collect stars for your next drink.</p>
       </div>
 
       <!-- Main Actions -->
       <div class="action-section">
-        <button id="scanStampBtn" class="use-btn">Scan at Till</button>
+        <button id="openQRBtn" class="use-btn">Scan at Till</button>
       </div>
 
       <!-- QR Scanner Modal (MATCHES REWARDS STYLE) -->
@@ -41,7 +40,7 @@
       <section class="beans-card">
         <div class="beans-visual">
           <div class="beans-count">
-            <span id="currentStamps">0</span>/<span>9</span>
+            <span id="stampCountDisplay">0</span>/<span>9</span>
           </div>
           <div id="stampGrid" class="stamp-grid"></div>
         </div>
@@ -85,7 +84,7 @@
   <div id="toast" class="custom-toast" style="display:none;"></div>
 
   <audio id="stampSound" src="sounds/stamp.mp3" preload="auto"></audio>
-  <audio id="rewardSound" src="sounds/reward.mp3" preload="auto"></audio>
+  <audio id="rewardSound" src="sounds/redeem.mp3" preload="auto"></audio>
 
 </body>
 </html>

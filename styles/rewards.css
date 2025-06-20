@@ -1,5 +1,8 @@
 body, html {
   background: #fff;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .rewards-banner {
@@ -36,14 +39,18 @@ body, html {
 }
 
 #emptyStateMsg {
- padding: 30px
+  padding: 30px;
+  text-align: center;
+  color: #91204D;
+  font-weight: 600;
 }
 
 .rewards-container {
-  padding: 24px 12px 0 12px;
+  padding: 24px 12px 100px 12px; /* ⬅️ add ~100px bottom padding */
   min-height: 70vh;
   background: #fff;
 }
+
 
 .rewards-group {
   display: flex;
@@ -54,15 +61,51 @@ body, html {
 .reward-card {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background: #fff;
   border-radius: 20px;
-  margin-bottom: 0;
-  box-shadow: 0 2px 8px rgba(145,32,77,0.08);
+  box-shadow: 0 2px 8px rgba(145, 32, 77, 0.08);
   padding: 14px 18px;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: border 0.2s;
+  transition: border 0.2s ease;
   position: relative;
+}
+
+.reward-card:hover,
+.reward-card.selected {
+  border: 2px solid #af0161;
+}
+
+.reward-card-left {
+  display: flex;
+  align-items: center;
+}
+
+.reward-icon.round {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #eee;
+  margin-right: 1rem;
+}
+
+.reward-text {
+  flex: 1;
+}
+
+.reward-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #91204D;
+  margin: 0 0 4px 0;
+}
+
+.reward-subtext {
+  font-size: 0.95rem;
+  color: #888;
+  margin: 0;
 }
 
 .reward-card input[type="radio"] {
@@ -105,62 +148,10 @@ body, html {
   background: #fff;
 }
 
-.reward-card.selected,
-.reward-card:hover {
-  border: 2px solid #af0161;
-}
-
-.reward-card-left {
-  margin-right: 18px;
-}
-
-.reward-icon {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  margin-right: 1rem;
-  border-radius: 50%;
-}
-
-.reward-icon.round {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #eee;
-}
-
-.reward-text {
-  flex: 1;
-}
-
-.reward-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #91204D;
-  margin: 0 0 4px 0;
-}
-
-.reward-subtext {
-  font-size: 0.95rem;
-  color: #888;
-  margin: 0;
-}
-
-.no-rewards-message {
-  text-align: center;
-  color: #91204D;
-  font-weight: 600;
-  margin-top: 32px;
-}
-
-.hidden {
-  display: none !important;
-}
-
+/* Use at Till Button */
 .use-btn {
   width: 90%;
-  margin: 24px auto 24px auto;
+  margin: 24px auto;
   display: block;
   background: #af0161;
   color: #fff;
@@ -184,6 +175,7 @@ body, html {
   cursor: not-allowed;
 }
 
+/* QR Modal */
 .qr-modal {
   position: fixed;
   inset: 0;
@@ -205,6 +197,14 @@ body, html {
   width: 90%;
   max-width: 400px;
   position: relative;
+  text-align: center;
+}
+
+.qr-modal-header {
+  font-weight: 600;
+  color: #91204D;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
 }
 
 #qr-reader {
@@ -220,62 +220,9 @@ body, html {
 
 #scanStatus {
   text-align: center;
-}
-
-#qrcode {
-  margin: 0 auto 1.2rem;
-  display: block;
-}
-
-#rewardInfo {
-  margin-bottom: 1.4rem;
+  margin-top: 10px;
   color: #91204D;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.qr-modal-header {
-  font-weight: 600;
-  color: #91204D;
-  margin-bottom: 1rem;
-}
-
-.qr-image {
-  width: 160px;
-  height: 160px;
-  margin: 1rem auto;
-  display: block;
-  border-radius: 16px;
-  border: 3px solid #f58ca0;
-  background: #fff;
-}
-
-.reward-info {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  justify-content: center;
-  margin: 1.2rem 0 0.5rem;
-}
-
-.reward-icon-sm {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-#qrRewardTitle {
-  font-weight: 600;
-  font-size: 1rem;
-  color: #333;
-  display: block;
-}
-
-#qrRewardSub {
-  font-size: 0.9rem;
-  color: #91204D;
-  display: block;
+  font-weight: 500;
 }
 
 .close-btn {
@@ -292,4 +239,37 @@ body, html {
 
 .close-btn:hover {
   background: #91204D;
+}
+
+/* Nav Bar */
+.main-navbar {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 12px 16px;
+}
+
+.main-navbar ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+  margin: 0;
+}
+
+.main-navbar li a {
+  text-decoration: none;
+  color: #91204D;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.main-navbar li a.active,
+.main-navbar li a:hover {
+  color: #af0161;
+}
+
+/* Hide element helper */
+.hidden {
+  display: none !important;
 }
