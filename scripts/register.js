@@ -2,46 +2,18 @@
 import { supabase } from './supabase-init.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  const emailInput       = document.getElementById("email");
-  const firstNameInput   = document.getElementById("firstName");
-  const passwordInput    = document.getElementById("regPassword");
-  const registerButton   = document.getElementById("registerSubmit");
-  const badgeElements    = document.querySelectorAll(".badge");
-  const termsCheckbox    = document.getElementById("termsCheckbox");
-  const errorDisplay     = document.getElementById("registerError");
+  const emailInput      = document.getElementById("email");
+  const firstNameInput  = document.getElementById("firstName");
+  const lastNameInput   = document.getElementById("lastName");
+  const passwordInput   = document.getElementById("regPassword");
+  const registerButton  = document.getElementById("registerSubmit");
+  const termsCheckbox   = document.getElementById("termsCheckbox");
+  const errorDisplay    = document.getElementById("registerError");
 
-  const badgeMap = {
-    upper: /[A-Z]/,
-    lower: /[a-z]/,
-    number: /\d/,
-    special: /[!@#$%^&*(),.?":{}|<>]/,
-    length: /.{8,}/
-  };
-
-  // ✅ Password badge feedback
-  passwordInput.addEventListener("input", () => {
-    const value = passwordInput.value;
-    let allValid = true;
-
-    badgeElements.forEach((el) => {
-      const rule = el.getAttribute("data-rule");
-      const regex = badgeMap[rule];
-      if (regex && regex.test(value)) {
-        el.classList.add("met");
-      } else {
-        el.classList.remove("met");
-        allValid = false;
-      }
-    });
-
-    registerButton.disabled = !allValid || !termsCheckbox.checked;
-    registerButton.classList.toggle("active", allValid && termsCheckbox.checked);
-  });
-
+  // ✅ Only enable button when terms are accepted
   termsCheckbox.addEventListener("change", () => {
-    const allValid = Array.from(badgeElements).every(el => el.classList.contains("met"));
-    registerButton.disabled = !allValid || !termsCheckbox.checked;
-    registerButton.classList.toggle("active", allValid && termsCheckbox.checked);
+    registerButton.disabled = !termsCheckbox.checked;
+    registerButton.classList.toggle("active", termsCheckbox.checked);
   });
 
   // ✅ Registration logic
@@ -51,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const email     = emailInput?.value.trim();
     const firstName = firstNameInput?.value.trim();
+    const lastName  = lastNameInput?.value.trim();
     const password  = passwordInput?.value;
 
     if (!email || !firstName || !password) {
@@ -67,14 +40,22 @@ document.addEventListener("DOMContentLoaded", () => {
       if (error) throw new Error(error.message);
 
       const userId = data.user?.id;
+
       if (userId) {
-        await supabase.from("profiles").insert([{
+        const { error: profileError, data: profileData } = await supabase.from("profiles").insert([{
           id: userId,
           first_name: firstName,
-          stamps: 0,
-          tea_redeemed: 0,
-          coffee_redeemed: false
+          last_name: lastName,
         }]);
+
+        if (profileError) {
+          console.error("❌ Profile insert error:", profileError.message || profileError);
+
+          errorDisplay.textContent = "Profile save failed: " + profileError.message;
+          return;
+        }
+
+        console.log("✅ Profile inserted:", profileData);
       }
 
       localStorage.setItem("firstName", firstName);
@@ -83,5 +64,5 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       errorDisplay.textContent = "❌ Registration failed: " + error.message;
     }
-  });
-});
+  }); // ← End of click event
+}); // ← End of DOMContentLoaded
